@@ -3,23 +3,54 @@ import 'package:inventory_system/Utilities/ColorUtil.dart';
 
 class FullScreenDialog extends StatefulWidget {
 
-  FullScreenDialog({this.units});
+  FullScreenDialog({this.units, this.completion, this.quantity, this.notes, this.dropdownValue});
 
-  final List<String> units;
+  final List<UnitItem> units;
+
+  Function(UnitItem,int,String) completion;
+
+  int quantity = 0;
+
+  String notes = "";
+
+  UnitItem dropdownValue;
 
   @override
   FullScreenDialogState createState() => new FullScreenDialogState();
 }
 
 class FullScreenDialogState extends State<FullScreenDialog> {
-  TextEditingController _skillOneController = new TextEditingController();
-  TextEditingController _skillTwoController = new TextEditingController();
+  TextEditingController _quantityController = new TextEditingController();
+  TextEditingController _notesController = new TextEditingController();
 
-  TextEditingController _skillThreeController = new TextEditingController();
+  // TextEditingController _skillThreeController = new TextEditingController();
 
-  String dropdownValue;
+  int quantity = 0;
+
+  String notes = "";
+
+  UnitItem dropdownValue;
 
   FullScreenDialogState();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _quantityController.text = widget.quantity.toString() ?? "" ;
+    _notesController.text = widget.notes ?? "" ;
+
+    setState(() {
+      quantity = widget.quantity;
+      notes = widget.notes;
+      if(widget.dropdownValue != null){
+        dropdownValue = widget.dropdownValue;
+      }
+    });
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +66,7 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all()),
-                  child: DropdownButton<String>(
+                  child: DropdownButton<UnitItem>(
                     hint: Text('Please Select'),
                     isExpanded: true,
                     value: dropdownValue,
@@ -43,15 +74,15 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                     iconSize: 24,
                     elevation: 16,
                     underline: Container(),
-                    onChanged: (String newValue) {
+                    onChanged: (UnitItem newValue) {
                       setState(() {
                         dropdownValue = newValue;
                       });
                     },
-                    items: widget.units.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
+                    items: widget.units.map<DropdownMenuItem<UnitItem>>((UnitItem value) {
+                      return DropdownMenuItem<UnitItem>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value.unitName ?? ""),
                       );
                     }).toList(),
                   ),
@@ -59,6 +90,10 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                 SizedBox(height: 10),
                 Container(
                   child: TextField(
+                    controller: _quantityController,
+                    onChanged: (value) {
+                      quantity = int.parse(value);
+                    },
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -70,6 +105,10 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                 SizedBox(height: 10),
                 Container(
                   child: TextField(
+                    controller: _notesController,
+                    onChanged: (value) {
+                      notes = value;
+                    },
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "Note",
@@ -107,6 +146,7 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                             ),
                             child: TextButton(
                                 onPressed: () {
+                                  widget.completion(dropdownValue,quantity,notes);
                                   Navigator.pop(context);
                                 },
                                 child: Text(
@@ -122,4 +162,12 @@ class FullScreenDialogState extends State<FullScreenDialog> {
           ),
         ));
   }
+}
+
+class UnitItem{
+  final String unitName;
+  final int unitId;
+  final double unitPrice;
+
+  UnitItem({this.unitName, this.unitId, this.unitPrice});
 }

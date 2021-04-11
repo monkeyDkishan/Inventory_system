@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:inventory_system/Screens/SubCategoryScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/Utilities/ImageUtil.dart';
+import 'package:inventory_system/Utilities/constants.dart';
 import 'package:inventory_system/component/CartButton.dart';
 import 'package:inventory_system/component/CustomPopup.dart';
 import 'package:inventory_system/component/LoadingSmall.dart';
@@ -109,8 +110,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
             return ListTile(
               onTap: (){
-                print(res.subcategoryid);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SubCategoryScreen(subCategoryName: res.subCategoryName,productId: res.productid,subCategoryId: res.subcategoryid,categoryId: res.categoryid,))).then((value) {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SubCategoryScreen(subCategoryName: res.subCategoryName,productId: res.productid,subCategoryId: res.subcategoryid ?? 0,categoryId: res.categoryid,))).then((value) {
                   updateCount();
                 });
               },
@@ -123,7 +123,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   aspectRatio: 1,
                   child: Container(
                     color: Colors.white,
-                    child: ImageUtil.fadeInImage(res.imageUrl ?? "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png", 'Assets/Images/placeholder.png'),
+                    child: ImageUtil.fadeInImage( kImgUrl + res.imageUrl ?? "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png", 'Assets/Images/placeholder.png'),
                   ),
                 ),
               ),

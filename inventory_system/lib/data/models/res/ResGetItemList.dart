@@ -63,18 +63,19 @@ class ResGetItemList {
     this.description,
     this.unitprice,
     this.standeruom,
-    this.flagdeleted,
-    this.endeffdt,
-    this.minproductstockingodown,
-    this.minproductstockinbaseingodown,
-    this.minproductstockinshowroom,
-    this.minproductstockinbaseinshowroom,
-    this.sortorder,
-    this.hsncode,
-    this.cgstrate,
-    this.sgstrate,
-    this.igstrate,
-    this.imageUrl,
+    this.unitname,
+    // this.flagdeleted,
+    // this.endeffdt,
+    // this.minproductstockingodown,
+    // this.minproductstockinbaseingodown,
+    // this.minproductstockinshowroom,
+    // this.minproductstockinbaseinshowroom,
+    // this.sortorder,
+    // this.hsncode,
+    // this.cgstrate,
+    // this.sgstrate,
+    // this.igstrate,
+    this.imageList,
   });
 
   int productid;
@@ -85,20 +86,21 @@ class ResGetItemList {
   String code;
   int subcategoryid;
   String description;
-  int unitprice;
+  double unitprice;
   int standeruom;
-  bool flagdeleted;
-  DateTime endeffdt;
-  int minproductstockingodown;
-  int minproductstockinbaseingodown;
-  int minproductstockinshowroom;
-  int minproductstockinbaseinshowroom;
-  int sortorder;
-  String hsncode;
-  double cgstrate;
-  double sgstrate;
-  int igstrate;
-  dynamic imageUrl;
+  String unitname;
+  // bool flagdeleted;
+  // DateTime endeffdt;
+  // double minproductstockingodown;
+  // double minproductstockinbaseingodown;
+  // double minproductstockinshowroom;
+  // double minproductstockinbaseinshowroom;
+  // int sortorder;
+  // String hsncode;
+  // double cgstrate;
+  // double sgstrate;
+  // int igstrate;
+  List<ImageList> imageList;
 
   factory ResGetItemList.fromJson(Map<String, dynamic> json) => ResGetItemList(
     productid: json["productid"],
@@ -111,18 +113,19 @@ class ResGetItemList {
     description: json["description"],
     unitprice: json["unitprice"],
     standeruom: json["standeruom"],
-    flagdeleted: json["flagdeleted"],
-    endeffdt: DateTime.parse(json["endeffdt"]),
-    minproductstockingodown: json["minproductstockingodown"],
-    minproductstockinbaseingodown: json["minproductstockinbaseingodown"],
-    minproductstockinshowroom: json["minproductstockinshowroom"],
-    minproductstockinbaseinshowroom: json["minproductstockinbaseinshowroom"],
-    sortorder: json["sortorder"],
-    hsncode: json["hsncode"],
-    cgstrate: json["cgstrate"],
-    sgstrate: json["sgstrate"],
-    igstrate: json["igstrate"],
-    imageUrl: json["ImageURL"],
+    unitname: json["unitname"],
+    // flagdeleted: json["flagdeleted"],
+    // endeffdt: DateTime.parse(json["endeffdt"]),
+    // minproductstockingodown: json["minproductstockingodown"],
+    // minproductstockinbaseingodown: json["minproductstockinbaseingodown"].toDouble(),
+    // minproductstockinshowroom: json["minproductstockinshowroom"],
+    // minproductstockinbaseinshowroom: json["minproductstockinbaseinshowroom"].toDouble(),
+    // sortorder: json["sortorder"],
+    // hsncode: json["hsncode"],
+    // cgstrate: json["cgstrate"].toDouble(),
+    // sgstrate: json["sgstrate"].toDouble(),
+    // igstrate: json["igstrate"],
+    imageList: List<ImageList>.from(json["image_list"].map((x) => ImageList.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -136,17 +139,34 @@ class ResGetItemList {
     "description": description,
     "unitprice": unitprice,
     "standeruom": standeruom,
-    "flagdeleted": flagdeleted,
-    "endeffdt": endeffdt.toIso8601String(),
-    "minproductstockingodown": minproductstockingodown,
-    "minproductstockinbaseingodown": minproductstockinbaseingodown,
-    "minproductstockinshowroom": minproductstockinshowroom,
-    "minproductstockinbaseinshowroom": minproductstockinbaseinshowroom,
-    "sortorder": sortorder,
-    "hsncode": hsncode,
-    "cgstrate": cgstrate,
-    "sgstrate": sgstrate,
-    "igstrate": igstrate,
+    "unitname": unitname,
+    // "flagdeleted": flagdeleted,
+    // "endeffdt": endeffdt.toIso8601String(),
+    // "minproductstockingodown": minproductstockingodown,
+    // "minproductstockinbaseingodown": minproductstockinbaseingodown,
+    // "minproductstockinshowroom": minproductstockinshowroom,
+    // "minproductstockinbaseinshowroom": minproductstockinbaseinshowroom,
+    // "sortorder": sortorder,
+    // "hsncode": hsncode,
+    // "cgstrate": cgstrate,
+    // "sgstrate": sgstrate,
+    // "igstrate": igstrate,
+    "image_list": List<dynamic>.from(imageList.map((x) => x.toJson())),
+  };
+}
+
+class ImageList {
+  ImageList({
+    this.imageUrl,
+  });
+
+  String imageUrl;
+
+  factory ImageList.fromJson(Map<String, dynamic> json) => ImageList(
+    imageUrl: json["ImageURL"],
+  );
+
+  Map<String, dynamic> toJson() => {
     "ImageURL": imageUrl,
   };
 }

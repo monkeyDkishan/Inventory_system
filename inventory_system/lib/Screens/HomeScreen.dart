@@ -6,6 +6,7 @@ import 'package:inventory_system/Screens/SideMenuDrawer.dart';
 import 'package:inventory_system/Screens/SubCategoryScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/Utilities/ImageUtil.dart';
+import 'package:inventory_system/Utilities/constants.dart';
 import 'package:inventory_system/component/CartButton.dart';
 import 'package:inventory_system/component/CustomPopup.dart';
 import 'package:inventory_system/component/LoadingSmall.dart';
@@ -91,9 +92,10 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Text("Home"),
           elevation: 0.0,
           actions: [
-            CartForAll(totalCart: totalCartItem,callBack: (){
-              updateCount();
-            },)
+            if(totalCartItem != null)
+              CartForAll(totalCart: totalCartItem,callBack: (){
+                updateCount();
+              },)
           ],
         ),
         drawer: getDrawer(context),
@@ -244,8 +246,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               Expanded(
                                 flex:2,
                                 child: Container(
+                                  width: double.infinity,
                                   color: Colors.white,
-                                  child: ImageUtil.fadeInImage(data.imageUrl ?? "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png", 'Assets/Images/placeholder.png'),
+                                  child: ImageUtil.fadeInImage( kImgUrl + data.imageUrl ?? "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png", 'Assets/Images/placeholder.png'),
                                 ),
                               ),
                               Expanded(

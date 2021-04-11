@@ -60,6 +60,25 @@ class CartService{
     return prefs.commit();
   }
 
+  static Future<bool> addItemObj(Cart item) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var obj = prefs.getString(cartKey);
+    if(obj == null){
+
+    }else{
+      var res = welcomeFromJson(obj);
+
+      res.cart.add(item);
+
+      final jsonStr = jsonEncode(res);
+
+      prefs.setString(cartKey, jsonStr);
+    }
+    return prefs.commit();
+  }
+
+
   static Future<bool> editItem(int index, String item) async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -72,6 +91,24 @@ class CartService{
     final res = welcomeFromJson(obj);
 
     res.cart[index] = Cart.fromJson(jsonDecode(item));
+
+    prefs.setString(cartKey, jsonEncode(res.toJson()));
+
+    return prefs.commit();
+  }
+
+  static Future<bool> editItemObj(int index, Cart item) async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var obj = prefs.getString(cartKey);
+
+    if(obj == null){
+      return prefs.commit();
+    }
+
+    final res = welcomeFromJson(obj);
+
+    res.cart[index] = item;
 
     prefs.setString(cartKey, jsonEncode(res.toJson()));
 
@@ -139,6 +176,11 @@ class Cart {
     this.subcategoryid,
     this.description,
     this.imageUrl,
+    this.unitName,
+    this.unitId,
+    this.unitPrice,
+    this.quantity,
+    this.note,
   });
 
   int productid;
@@ -147,6 +189,11 @@ class Cart {
   int subcategoryid;
   String description;
   String imageUrl;
+  String unitName;
+  int unitId;
+  double unitPrice;
+  int quantity;
+  String note;
 
   factory Cart.fromJson(Map<String, dynamic> json) => Cart(
     productid: json["productid"],
@@ -155,6 +202,11 @@ class Cart {
     subcategoryid: json["Subcategoryid"],
     description: json["description"],
     imageUrl: json["ImageURL"],
+    unitName: json["unitName"],
+    unitId: json["unitId"],
+    unitPrice: json["unitPrice"],
+    quantity: json["quantity"],
+      note: json["note"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -164,6 +216,11 @@ class Cart {
     "Subcategoryid": subcategoryid,
     "description": description,
     "ImageURL": imageUrl,
+    "unitName": unitName,
+    "unitId": unitId,
+    "unitPrice": unitPrice,
+    "quantity": quantity,
+    "note": note,
   };
 }
 

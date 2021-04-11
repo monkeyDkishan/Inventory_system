@@ -23,7 +23,7 @@ class CategoryRepository{
   }
 
   Future<ResGetItem> getItemList(int categoryId,int subCategoryId,int productId) async{
-    var res = await _webService.getApiWithQuery(kGetSubCategoryList, {
+    var res = await _webService.getApiWithQuery(kGetItemList, {
       "CategoryID" : categoryId.toString(),
       "SubCategoryID" : subCategoryId.toString(),
       "ProductID" : productId.toString(),

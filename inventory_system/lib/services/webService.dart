@@ -26,6 +26,8 @@ class WebService {
         },
       );
 
+      print('Header: ${user.token}');
+
       responseJson = _returnResponse(response);
     } on SocketException {
       print("error 0 is: ");
@@ -51,7 +53,7 @@ class WebService {
         },
       );
 
-      print(user.token);
+      print('Header: ${user.token}');
 
       responseJson = _returnResponse(response);
     } on SocketException {
@@ -78,6 +80,8 @@ class WebService {
             "Authorization": '${user.token}'
           }
       );
+
+      print('Header: ${user.token}');
 
       responseJson = _returnResponse(response);
     } on SocketException {

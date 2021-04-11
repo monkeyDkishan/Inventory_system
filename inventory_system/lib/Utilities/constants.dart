@@ -13,3 +13,5 @@ const String kGetTermsConditions = "getTermsConditions";
 const String kGetAboutUs = "getAboutUs";
 const String kGetTotalOutStanding = "GetTotalOutStanding";
 const String kGetInvoiceList = "getInvoiceList";
+
+const String kImgUrl = "https://santkrupa.s3.ap-south-1.amazonaws.com/";

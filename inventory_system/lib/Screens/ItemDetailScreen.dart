@@ -2,25 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:inventory_system/Screens/AddItemToCartPopup.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/Utilities/ImageUtil.dart';
+import 'package:inventory_system/Utilities/constants.dart';
 import 'package:inventory_system/component/CartButton.dart';
+import 'package:inventory_system/component/CustomPopup.dart';
+import 'package:inventory_system/data/models/res/ResGetItemList.dart';
 import 'package:inventory_system/services/CartService.dart';
 
 class ItemDetailScreen extends StatefulWidget {
-  ItemDetailScreen({this.index, this.itemName});
+  ItemDetailScreen({this.index,this.itemDetail});
+
+  final ResGetItemList itemDetail;
 
   final int index;
-  final String itemName;
-
-  List<String> imageUrls = ['https://ae04.alicdn.com/kf/H5974b75654944e03bc7b7b6c7e3cf536Q.jpg','https://cdn.joelandsonfabrics.com/media/catalog/product/cache/ad8edc7db7d60c6f18acda2e15b81da5/1/9/19677c.jpg','https://static.fibre2fashion.com/MemberResources/LeadResources/8/2019/8/Buyer/19166986/Images/19166986_0_suiting-fabric.jpg'];
 
   @override
   _ItemDetailScreenState createState() => _ItemDetailScreenState();
 }
 
 class _ItemDetailScreenState extends State<ItemDetailScreen> {
-  FullScreenDialog _myDialog = new FullScreenDialog(
-    units: ["1", "2", "3", "4"],
-  );
+
+  FullScreenDialog _myDialog;
 
   static show({BuildContext context, WidgetBuilder builder}) {
     showDialog(
@@ -31,15 +32,16 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   }
 
   Widget imagesWidget(){
+    final res = widget.itemDetail.imageList;
     return PageView.builder(
-      itemCount: widget.imageUrls.length,
+      itemCount: res.length,
       itemBuilder: (context, index) {
         return Container(
           margin: EdgeInsets.all(15),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: Container(
-              child: ImageUtil.fadeInImage(widget.imageUrls[index], 'Assets/Images/placeholder.png'),
+              child: ImageUtil.fadeInImage(kImgUrl + (res[index].imageUrl ?? ""), 'Assets/Images/placeholder.png'),
             ),
           ),
         );
@@ -61,6 +63,28 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _myDialog = new FullScreenDialog(
+      units: [UnitItem(unitId: widget.itemDetail.standeruom,unitName: widget.itemDetail.unitname,unitPrice: widget.itemDetail.unitprice)],
+      completion: (unit, quantity, notes) async {
+
+        final res = widget.itemDetail;
+
+        final cartItem = await CartService.getCarts();
+
+        bool exist = cartItem.cart.any((element) {
+          return element.productid == res.productid ?? 0;
+        });
+
+        print('exist: $exist');
+
+        if(!exist){
+          CartService.addItemObj(Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes));
+          CustomPopup(context, title: 'Cart', message: 'Item added in cart', primaryBtnTxt: 'OK');
+        }else{
+          CustomPopup(context, title: 'Cart', message: 'Already in the cart', primaryBtnTxt: 'OK');
+        }
+      },
+    );
     updateCount();
   }
 
@@ -70,7 +94,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-          title: Text(widget.itemName),
+          title: Text('Item'),
           actions: [
             CartForAll(totalCart: totalCartItem,callBack: (){
               updateCount();
@@ -95,39 +119,22 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Item Name",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                            ),
-                          ),
-                          Container(
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  color: Colors.green[300],
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Text(
-                                "Type",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: Colors.white),
-                              )),
-                        ],
+                      Text(
+                        widget.itemDetail.productName ?? "productName",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Category",
+                        widget.itemDetail.categoryName ?? "Category",
                         style: TextStyle(
                             fontSize: 20, color: ColorUtil.primoryColor),
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "This item is contining the details for the item thai i have added and it is the item you can add inside your cart This item is contining the details for the item thai i have added and it is the item you can add inside your cart This item is contining the details for the item thai i have added and it is the item you can add inside your cart",
+                        widget.itemDetail.description ?? "description",
                         style: TextStyle(fontSize: 12),
                         textAlign: TextAlign.start,
                       ),
@@ -155,7 +162,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               },
               child: Center(
                   child: Text(
-                "Add to cart",
+                "Add to cart (Rs. ${widget.itemDetail.unitprice})",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

@@ -3,6 +3,7 @@ import 'package:inventory_system/Screens/AddItemToCartPopup.dart';
 import 'package:inventory_system/Screens/ItemDetailScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/Utilities/ImageUtil.dart';
+import 'package:inventory_system/Utilities/constants.dart';
 import 'package:inventory_system/component/CartButton.dart';
 import 'package:inventory_system/component/CustomPopup.dart';
 import 'package:inventory_system/component/LoadingSmall.dart';
@@ -29,7 +30,7 @@ class SubCategoryScreen extends StatefulWidget {
 
 class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
-  FullScreenDialog _myDialog = new FullScreenDialog(units: ["1","2","3","4"],);
+  FullScreenDialog _myDialog;
 
   bool isLoading = false;
 
@@ -113,7 +114,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
               margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
               child: GestureDetector(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ItemDetailScreen(index: index,itemName: "Item Name $index",))).then((value) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ItemDetailScreen(index: index,itemDetail: res,))).then((value) {
                     print('cool');
                     updateCount();
                   });
@@ -131,7 +132,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                 aspectRatio: 1,
                                 child: Container(
                                   color: Colors.black.withOpacity(0.1),
-                                  child: ImageUtil.fadeInImage(res.imageUrl ?? 'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png', 'Assets/Images/placeholder.png'),
+                                  child: ImageUtil.fadeInImage( (kImgUrl + res.imageList.first.imageUrl.toString()) ?? 'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png', 'Assets/Images/placeholder.png'),
                                 )
                               ),
                             ),
@@ -157,13 +158,30 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                       InkWell(
                                         onTap: () async {
                                           //Add item in cart popup here
-                                          // Navigator.push(context, new MaterialPageRoute(
-                                          //   builder: (BuildContext context) => _myDialog,
-                                          //   fullscreenDialog: true,
-                                          // ));
+                                          Navigator.push(context, new MaterialPageRoute(
+                                            builder: (BuildContext context) => FullScreenDialog(units: [UnitItem(unitId: res.standeruom,unitPrice: res.unitprice,unitName: res.unitname)],
+                                              completion: (unit, quantity, notes) async {
 
-                                          CartService.addItem('{     "productid": 1,     "ProductName": "productName",     "Categoryid": 0,     "Subcategoryid": 0,     "description": "description",     "ImageURL": ""   }');
+                                                final cartItem = await CartService.getCarts();
 
+                                                bool exist = cartItem.cart.any((element) {
+                                                  return element.productid == res.productid ?? 0;
+                                                });
+
+                                                print('exist: $exist');
+
+                                                if(!exist){
+                                                  CartService.addItemObj(Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes));
+                                                  CustomPopup(context, title: 'Cart', message: 'Item added in cart', primaryBtnTxt: 'OK');
+                                                }else{
+                                                  CustomPopup(context, title: 'Cart', message: 'Already in the cart', primaryBtnTxt: 'OK');
+                                                }
+                                                updateCount();
+                                              },
+                                            ),
+                                            fullscreenDialog: true,
+                                          ));
+// CartService.addItemObj(Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString()));
                                           updateCount();
                                         },
                                         child: Container(

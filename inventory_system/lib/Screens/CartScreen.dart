@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inventory_system/Screens/AddItemToCartPopup.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/Utilities/ImageUtil.dart';
+import 'package:inventory_system/Utilities/constants.dart';
 import 'package:inventory_system/component/CustomPopup.dart';
 import 'package:inventory_system/component/NoDataFoundContainer.dart';
 import 'package:inventory_system/services/CartService.dart';
@@ -13,9 +14,10 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   String dropdownValue;
-  FullScreenDialog _myDialog = new FullScreenDialog(units: ["1","2","3","4"],);
 
   CartList cart;
+
+  double total = 0;
 
   @override
   void initState() {
@@ -27,7 +29,16 @@ class _CartScreenState extends State<CartScreen> {
 
   getCart() async {
     var res = await CartService.getCarts();
+    double priceTotal = 0.0;
+
+    // res.cart.forEach((e) {
+    //   print('price : ${e.quantity * e.unitPrice}');
+    //   priceTotal += (e.quantity * e.unitPrice);
+    // });
+
+    print(priceTotal);
     setState(() {
+      total = priceTotal;
       cart = res;
     });
 
@@ -59,6 +70,9 @@ class _CartScreenState extends State<CartScreen> {
             child: ListView.builder(
               itemCount: cart.cart.length,
               itemBuilder: (BuildContext context, int index) {
+
+                final res = cart.cart[index];
+
                 return Container(
                   margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Card(
@@ -68,7 +82,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                     elevation: 2,
                     child: Padding(
-                        padding: EdgeInsets.all(15),
+                        padding: EdgeInsets.all(5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +93,7 @@ class _CartScreenState extends State<CartScreen> {
                                 child: Container(
                                   child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
-                                    child: ImageUtil.fadeInImage('https://static.fibre2fashion.com/MemberResources/LeadResources/8/2018/9/Buyer/18154568/Images/18154568_0_suiting-fabric.jpg', 'Assets/Images/placeholder.png'),
+                                    child: ImageUtil.fadeInImage(kImgUrl + (res.imageUrl.toString() ?? ""), 'Assets/Images/placeholder.png'),
                                   ),
                                   decoration: BoxDecoration(
                                       borderRadius:
@@ -94,7 +108,7 @@ class _CartScreenState extends State<CartScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Item name Item name Item name Item name Item name",
+                                    res.productName ?? "Product name",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 15),
@@ -102,7 +116,7 @@ class _CartScreenState extends State<CartScreen> {
                                     textAlign: TextAlign.start,
                                   ),
                                   Text(
-                                    "Quantity : 10",
+                                    "Quantity : ${res.quantity}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: Colors.grey,
@@ -111,7 +125,16 @@ class _CartScreenState extends State<CartScreen> {
                                     textAlign: TextAlign.start,
                                   ),
                                   Text(
-                                    "Unit : kg",
+                                    res.note ?? "notes",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey,
+                                        fontSize: 13),
+                                    maxLines: 2,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  Text(
+                                     'Rs. ${res.unitPrice} for 1 ${res.unitName} ',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: Colors.grey,
@@ -139,10 +162,22 @@ class _CartScreenState extends State<CartScreen> {
                                           onPressed: (){
                                             CartService.editItem(index,'{     "productid": 10,     "ProductName": "productName",     "Categoryid": 0,     "Subcategoryid": 0,     "description": "description",     "ImageURL": ""   }');
                                             getCart();
-                                            // Navigator.push(context, new MaterialPageRoute(
-                                            //   builder: (BuildContext context) => _myDialog,
-                                            //   fullscreenDialog: true,
-                                            // ));
+                                            Navigator.push(context, new MaterialPageRoute(
+                                              builder: (BuildContext context) => FullScreenDialog(
+                                                dropdownValue: UnitItem(unitId: res.unitId,unitName: res.unitName,unitPrice: res.unitPrice),
+                                                quantity: res.quantity,
+                                                notes: res.note,
+                                                units: [UnitItem(unitId: res.unitId,unitName: res.unitName,unitPrice: res.unitPrice)],
+                                                completion: (unit, quantity, notes) async {
+
+                                                  CartService.editItemObj(index,Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageUrl,unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes));
+
+                                                  getCart();
+
+                                                },
+                                              ),
+                                              fullscreenDialog: true,
+                                            ));
                                           },
                                           child: Container(
                                             padding: EdgeInsets.symmetric(
@@ -234,7 +269,7 @@ class _CartScreenState extends State<CartScreen> {
                                 TextStyle(fontSize: 15, color: Colors.white),
                           ),
                           Text(
-                            "100.00",
+                            "$total",
                             style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -254,7 +289,7 @@ class _CartScreenState extends State<CartScreen> {
                             TextStyle(fontSize: 15, color: Colors.white),
                           ),
                           Text(
-                            "-10.00",
+                            "-0.00",
                             style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -279,7 +314,7 @@ class _CartScreenState extends State<CartScreen> {
                                   TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  "90.00",
+                                  "$total",
                                   style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                                 )
                               ],
