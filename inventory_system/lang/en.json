@@ -1,0 +1,11 @@
+{
+  "welcome_to_app_LOGIN_SCREEN" : "WELCOME TO",
+  "please_enter_mobile_number_LOGIN_SCREEN" : "To login please enter your mobile number",
+  "mobile_number_LOGIN_SCREEN": "Mobile Number",
+  "enter_mobile_number_LOGIN_SCREEN": "Enter Mobile Number",
+  "continue_button_LOGIN_SCREEN": "CONTINUE",
+
+  "enter_otp_OTP_SCREEN": "Enter OTP",
+  "otp_has_been_sent_OTP_SCREEN": "OTP has benn sent to you on your mobile number, Please enter it below",
+  "submit_OTP_SCREEN": "SUBMIT"
+}
