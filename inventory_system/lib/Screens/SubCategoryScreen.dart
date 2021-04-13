@@ -164,25 +164,30 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
                                                 final cartItem = await CartService.getCarts();
 
-                                                bool exist = cartItem.cart.any((element) {
-                                                  return element.productid == res.productid ?? 0;
-                                                });
-
-                                                print('exist: $exist');
-
-                                                if(!exist){
+                                                if(cartItem == null){
                                                   CartService.addItemObj(Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes));
                                                   CustomPopup(context, title: 'Cart', message: 'Item added in cart', primaryBtnTxt: 'OK');
                                                 }else{
-                                                  CustomPopup(context, title: 'Cart', message: 'Already in the cart', primaryBtnTxt: 'OK');
+                                                  bool exist = cartItem.cart.any((element) {
+                                                    return element.productid == res.productid ?? 0;
+                                                  });
+
+                                                  print('exist: $exist');
+
+                                                  if(!exist){
+                                                    CartService.addItemObj(Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes));
+                                                    CustomPopup(context, title: 'Cart', message: 'Item added in cart', primaryBtnTxt: 'OK');
+                                                  }else{
+                                                    CustomPopup(context, title: 'Cart', message: 'Already in the cart', primaryBtnTxt: 'OK');
+                                                  }
                                                 }
-                                                updateCount();
                                               },
                                             ),
                                             fullscreenDialog: true,
-                                          ));
-// CartService.addItemObj(Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString()));
-                                          updateCount();
+                                          )).then((value) {
+                                            updateCount();
+                                          });
+
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(

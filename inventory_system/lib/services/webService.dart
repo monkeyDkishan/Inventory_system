@@ -18,6 +18,7 @@ class WebService {
       Uri.http(kBaseDomain, '$kBasePath$path/', body);
 
       print('URL: $uri');
+      print('Header: ${user.token}');
 
       final response = await http.get(
         uri,
@@ -25,8 +26,6 @@ class WebService {
           "Authorization": '${user.token}'
         },
       );
-
-      print('Header: ${user.token}');
 
       responseJson = _returnResponse(response);
     } on SocketException {
@@ -45,6 +44,7 @@ class WebService {
       var uri = Uri.parse(kBaseUrl + path);
 
       print('URL: $uri');
+      print('Header: ${user.token}');
 
       final response = await http.get(
         uri,
@@ -52,8 +52,6 @@ class WebService {
           "Authorization": '${user.token}'
         },
       );
-
-      print('Header: ${user.token}');
 
       responseJson = _returnResponse(response);
     } on SocketException {
@@ -72,6 +70,7 @@ class WebService {
       var uri = Uri.parse(kBaseUrl + path);
 
       print('URL: $uri, Req: $body');
+      print('Header: ${user.token}');
 
       final response = await http.post(
           uri,
@@ -80,8 +79,6 @@ class WebService {
             "Authorization": '${user.token}'
           }
       );
-
-      print('Header: ${user.token}');
 
       responseJson = _returnResponse(response);
     } on SocketException {

@@ -34,9 +34,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   updateCount() async {
     var cart = await CartService.getCarts();
-    setState(() {
-      totalCartItem = cart.cart.length;
-    });
+    if(cart != null){
+      setState(() {
+        totalCartItem = cart.cart.length ?? 0;
+      });
+    }
   }
 
   int totalOutStandings;
@@ -92,8 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Text("Home"),
           elevation: 0.0,
           actions: [
-            if(totalCartItem != null)
-              CartForAll(totalCart: totalCartItem,callBack: (){
+              CartForAll(totalCart: totalCartItem ?? 0,callBack: (){
                 updateCount();
               },)
           ],

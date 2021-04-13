@@ -31,10 +31,9 @@ class _CartScreenState extends State<CartScreen> {
     var res = await CartService.getCarts();
     double priceTotal = 0.0;
 
-    // res.cart.forEach((e) {
-    //   print('price : ${e.quantity * e.unitPrice}');
-    //   priceTotal += (e.quantity * e.unitPrice);
-    // });
+    res.cart.forEach((e) {
+      priceTotal += ((e.quantity ?? 0.0) * (e.unitPrice ?? 0.0));
+    });
 
     print(priceTotal);
     setState(() {
@@ -160,7 +159,6 @@ class _CartScreenState extends State<CartScreen> {
                                       Container(
                                         child: TextButton(
                                           onPressed: (){
-                                            CartService.editItem(index,'{     "productid": 10,     "ProductName": "productName",     "Categoryid": 0,     "Subcategoryid": 0,     "description": "description",     "ImageURL": ""   }');
                                             getCart();
                                             Navigator.push(context, new MaterialPageRoute(
                                               builder: (BuildContext context) => FullScreenDialog(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
+import 'package:inventory_system/component/CustomPopup.dart';
 
 class FullScreenDialog extends StatefulWidget {
 
@@ -38,14 +39,14 @@ class FullScreenDialogState extends State<FullScreenDialog> {
     // TODO: implement initState
     super.initState();
 
-    _quantityController.text = widget.quantity.toString() ?? "" ;
+    _quantityController.text = (widget.quantity ?? 0).toString() ;
     _notesController.text = widget.notes ?? "" ;
 
     setState(() {
-      quantity = widget.quantity;
+      quantity = widget.quantity ?? 0;
       notes = widget.notes;
       if(widget.dropdownValue != null){
-        dropdownValue = widget.dropdownValue;
+        dropdownValue = widget.units.first;
       }
     });
 
@@ -146,6 +147,22 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                             ),
                             child: TextButton(
                                 onPressed: () {
+
+                                  if(dropdownValue == null){
+                                    CustomPopup(context, title: 'Validate', message: 'Please select unit', primaryBtnTxt: 'OK');
+                                    return;
+                                  }
+
+                                  if(_quantityController.text.isEmpty){
+                                    CustomPopup(context, title: 'Validate', message: 'Please enter quantity', primaryBtnTxt: 'OK');
+                                    return;
+                                  }
+
+                                  if(_notesController.text.isEmpty){
+                                    CustomPopup(context, title: 'Validate', message: 'Please enter notes', primaryBtnTxt: 'OK');
+                                    return;
+                                  }
+
                                   widget.completion(dropdownValue,quantity,notes);
                                   Navigator.pop(context);
                                 },

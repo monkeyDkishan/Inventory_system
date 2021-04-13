@@ -19,7 +19,7 @@ class CartBloc{
 }
 
 class CartService{
-  static final cartKey = 'afsa';
+  static final cartKey = 'sodaPani';
 
   CartList cart;
 
@@ -64,8 +64,18 @@ class CartService{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     var obj = prefs.getString(cartKey);
+    print('${item.toJson()}');
     if(obj == null){
-
+      var cool = """
+          {
+            "cart":
+              [
+                  ${jsonEncode(item)}
+              ]
+          }
+    """;
+      print(cool);
+      prefs.setString(cartKey, cool);
     }else{
       var res = welcomeFromJson(obj);
 
@@ -136,14 +146,19 @@ class CartService{
   }
 
   static Future<CartList> getCarts() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    try{
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var obj = prefs.getString(cartKey);
+      var obj = prefs.getString(cartKey);
 
-    print(obj);
-    var res = welcomeFromJson(obj);
+      print(obj);
+      var res = welcomeFromJson(obj);
 
-    return res;
+      return res;
+    }catch(e){
+      print(e);
+    }
+
   }
 
 }
