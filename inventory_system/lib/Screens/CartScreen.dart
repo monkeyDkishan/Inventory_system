@@ -4,8 +4,13 @@ import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/Utilities/ImageUtil.dart';
 import 'package:inventory_system/Utilities/constants.dart';
 import 'package:inventory_system/component/CustomPopup.dart';
+import 'package:inventory_system/component/LoadingSmall.dart';
 import 'package:inventory_system/component/NoDataFoundContainer.dart';
+import 'package:inventory_system/data/models/CartModel.dart';
+import 'package:inventory_system/data/models/res/ResGetDeliveryType.dart';
+import 'package:inventory_system/data/models/res/ResGetItemList.dart';
 import 'package:inventory_system/services/CartService.dart';
+import 'package:inventory_system/services/webService.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -13,18 +18,24 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  String dropdownValue;
+  ResGetDeliveryTypeListElement dropdownValue;
 
   CartList cart;
 
   double total = 0;
+
+  double deliveryCharge = 0;
+
+  bool isLoading = false;
+
+  List<ResGetDeliveryTypeListElement> deliveryTypes;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getCart();
-
+    getDeliveryType();
   }
 
   getCart() async {
@@ -37,10 +48,39 @@ class _CartScreenState extends State<CartScreen> {
 
     print(priceTotal);
     setState(() {
-      total = priceTotal;
+      total = priceTotal ?? 0.0;
       cart = res;
     });
 
+  }
+
+  getDeliveryType() async {
+    CartModel.getDeliveryType(completion: (res){
+      switch (res.state) {
+        case Status.LOADING:
+          setState(() {
+            isLoading = true;
+          });
+          break;
+        case Status.COMPLETED:
+          setState(() {
+            isLoading = false;
+            deliveryTypes = res.data.data.list;
+            dropdownValue = deliveryTypes.first;
+
+            deliveryCharge = dropdownValue.price ?? 0.0;
+
+          });
+          break;
+        case Status.ERROR:
+          setState(() {
+            isLoading = false;
+          });
+          CustomPopup(context,
+              title: 'Sorry', message: res.msg ?? "Error", primaryBtnTxt: 'OK');
+          break;
+      }
+    });
   }
 
   @override
@@ -54,6 +94,10 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget buildContainer() {
+
+    if(isLoading){
+      return LoadingSmall();
+    }
 
     if(cart == null || cart.cart.length <= 0){
       return NoDataFoundContainer();
@@ -133,7 +177,7 @@ class _CartScreenState extends State<CartScreen> {
                                     textAlign: TextAlign.start,
                                   ),
                                   Text(
-                                     'Rs. ${res.unitPrice} for 1 ${res.unitName} ',
+                                     'Rs. ${res.unitPrice ?? 0.0} for 1 ${res.unitName} ',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: Colors.grey,
@@ -159,16 +203,29 @@ class _CartScreenState extends State<CartScreen> {
                                       Container(
                                         child: TextButton(
                                           onPressed: (){
+
+                                            List<UnitItem> units = [];
+
+                                            res.unitmaster.forEach((element) {
+
+                                              units.add(UnitItem(unitId: element.unitmasterid ?? 0,unitPrice: res.unitPrice,unitName: element.unitname ?? ""));
+
+                                            });
+
                                             getCart();
                                             Navigator.push(context, new MaterialPageRoute(
                                               builder: (BuildContext context) => FullScreenDialog(
-                                                dropdownValue: UnitItem(unitId: res.unitId,unitName: res.unitName,unitPrice: res.unitPrice),
+                                                index: res.selectedIndex ?? 0,
+                                                dropdownValue: UnitItem(unitId: res.unitId ?? 0,unitPrice: res.unitPrice,unitName: res.unitName ?? ""),
                                                 quantity: res.quantity,
                                                 notes: res.note,
-                                                units: [UnitItem(unitId: res.unitId,unitName: res.unitName,unitPrice: res.unitPrice)],
-                                                completion: (unit, quantity, notes) async {
+                                                units: units,
+                                                completion: (unit, quantity, notes, id) async {
 
-                                                  CartService.editItemObj(index,Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageUrl,unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes));
+                                                  print('cool');
+                                                  print(id);
+
+                                                  CartService.editItemObj(index,Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageUrl,unitName: unit.unitName,unitPrice: unit.unitPrice ?? 0.0,unitId: unit.unitId,quantity: quantity,note: notes,unitmaster: res.unitmaster,selectedIndex: id));
 
                                                   getCart();
 
@@ -218,44 +275,46 @@ class _CartScreenState extends State<CartScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Container(
-                      height: 44,
-                      padding: EdgeInsets.all(10),
-                      margin: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.white)),
-                      child: DropdownButton<String>(
-                        hint: Text('Select Type',style: TextStyle(
-                          color: Colors.white
-                        ),),
-                        isExpanded: true,
-                        value: dropdownValue,
-                        dropdownColor: ColorUtil.primoryColor,
-                        icon: Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Colors.white,
+                    if(dropdownValue != null)
+                      Container(
+                        height: 44,
+                        padding: EdgeInsets.all(10),
+                        margin: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.white)),
+                        child: DropdownButton<ResGetDeliveryTypeListElement>(
+                          hint: Text('Select Type',style: TextStyle(
+                              color: Colors.white
+                          ),),
+                          isExpanded: true,
+                          value: dropdownValue,
+                          dropdownColor: ColorUtil.primoryColor,
+                          icon: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.white,
+                          ),
+                          iconSize: 24,
+                          elevation: 16,
+                          underline: Container(),
+                          onChanged: (ResGetDeliveryTypeListElement newValue) {
+                            setState(() {
+                              dropdownValue = newValue;
+                              deliveryCharge = dropdownValue.price ?? 0.0;
+                            });
+                          },
+                          items: deliveryTypes
+                              .map<DropdownMenuItem<ResGetDeliveryTypeListElement>>((ResGetDeliveryTypeListElement value) {
+                            return DropdownMenuItem<ResGetDeliveryTypeListElement>(
+                              value: value,
+                              child: Text(
+                                value.deliveryType ?? "",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            );
+                          }).toList(),
                         ),
-                        iconSize: 24,
-                        elevation: 16,
-                        underline: Container(),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            dropdownValue = newValue;
-                          });
-                        },
-                        items: ["Type1", "Type2"]
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-                        }).toList(),
                       ),
-                    ),
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
@@ -267,7 +326,7 @@ class _CartScreenState extends State<CartScreen> {
                                 TextStyle(fontSize: 15, color: Colors.white),
                           ),
                           Text(
-                            "$total",
+                            "${total ?? 0.0}",
                             style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -282,12 +341,12 @@ class _CartScreenState extends State<CartScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Discount",
+                            "Delivery Charge",
                             style:
                             TextStyle(fontSize: 15, color: Colors.white),
                           ),
                           Text(
-                            "-0.00",
+                            '${dropdownValue.price ?? 0.0}',
                             style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -312,7 +371,7 @@ class _CartScreenState extends State<CartScreen> {
                                   TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  "$total",
+                                  "${(deliveryCharge ?? 0.0) + (total ?? 0.0)}",
                                   style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                                 )
                               ],

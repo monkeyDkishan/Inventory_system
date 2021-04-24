@@ -63,16 +63,30 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    List<UnitItem> units = [];
+
+    widget.itemDetail.unitmaster.forEach((element) {
+
+      units.add(UnitItem(unitId: element.unitmasterid ?? 0,unitPrice: widget.itemDetail.unitprice,unitName: element.unitname ?? ""));
+
+    });
+
     _myDialog = new FullScreenDialog(
-      units: [UnitItem(unitId: widget.itemDetail.standeruom,unitName: widget.itemDetail.unitname,unitPrice: widget.itemDetail.unitprice)],
-      completion: (unit, quantity, notes) async {
+      units: units,
+      completion: (unit, quantity, notes, index) async {
 
         final res = widget.itemDetail;
 
         final cartItem = await CartService.getCarts();
 
         if(cartItem == null){
-          CartService.addItemObj(Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes));
+
+          final cartItem = Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes,unitmaster: res.unitmaster,selectedIndex: index);
+
+          CartService.addItemObj(cartItem);
+
+          // CartService.addItemObj(Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes));
           CustomPopup(context, title: 'Cart', message: 'Item added in cart', primaryBtnTxt: 'OK');
         }else{
           bool exist = cartItem.cart.any((element) {
@@ -82,7 +96,12 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           print('exist: $exist');
 
           if(!exist){
-            CartService.addItemObj(Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes));
+
+            final cartItem = Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes,unitmaster: res.unitmaster,selectedIndex: index);
+
+            CartService.addItemObj(cartItem);
+
+            // CartService.addItemObj(Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes));
             CustomPopup(context, title: 'Cart', message: 'Item added in cart', primaryBtnTxt: 'OK');
           }else{
             CustomPopup(context, title: 'Cart', message: 'Already in the cart', primaryBtnTxt: 'OK');

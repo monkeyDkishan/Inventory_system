@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:inventory_system/data/models/res/ResGetItemList.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -19,7 +20,7 @@ class CartBloc{
 }
 
 class CartService{
-  static final cartKey = 'sodaPani';
+  static final cartKey = 'sodapanii';
 
   CartList cart;
 
@@ -196,6 +197,8 @@ class Cart {
     this.unitPrice,
     this.quantity,
     this.note,
+    this.unitmaster,
+    this.selectedIndex
   });
 
   int productid;
@@ -209,6 +212,8 @@ class Cart {
   double unitPrice;
   int quantity;
   String note;
+  int selectedIndex;
+  List<Unitmaster> unitmaster;
 
   factory Cart.fromJson(Map<String, dynamic> json) => Cart(
     productid: json["productid"],
@@ -221,7 +226,10 @@ class Cart {
     unitId: json["unitId"],
     unitPrice: json["unitPrice"],
     quantity: json["quantity"],
-      note: json["note"]
+    note: json["note"],
+    unitmaster: List<Unitmaster>.from(json["unitmaster"].map((x) => Unitmaster.fromJson(x))),
+    selectedIndex: json["selectedIndex"],
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -236,6 +244,8 @@ class Cart {
     "unitPrice": unitPrice,
     "quantity": quantity,
     "note": note,
+    "unitmaster": List<dynamic>.from(unitmaster.map((x) => x.toJson())),
+    "selectedIndex": selectedIndex,
   };
 }
 

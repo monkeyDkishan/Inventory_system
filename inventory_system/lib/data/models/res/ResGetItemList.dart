@@ -64,6 +64,7 @@ class ResGetItemList {
     this.unitprice,
     this.standeruom,
     this.unitname,
+    this.unitmaster,
     // this.flagdeleted,
     // this.endeffdt,
     // this.minproductstockingodown,
@@ -76,6 +77,10 @@ class ResGetItemList {
     // this.sgstrate,
     // this.igstrate,
     this.imageList,
+    this.selectedUnitIndex,
+    this.quantity,
+    this.notes,
+    this.selectedUnitMaster,
   });
 
   int productid;
@@ -89,6 +94,7 @@ class ResGetItemList {
   double unitprice;
   int standeruom;
   String unitname;
+  List<Unitmaster> unitmaster;
   // bool flagdeleted;
   // DateTime endeffdt;
   // double minproductstockingodown;
@@ -101,6 +107,10 @@ class ResGetItemList {
   // double sgstrate;
   // int igstrate;
   List<ImageList> imageList;
+  int selectedUnitIndex;
+  int quantity;
+  String notes;
+  Unitmaster selectedUnitMaster;
 
   factory ResGetItemList.fromJson(Map<String, dynamic> json) => ResGetItemList(
     productid: json["productid"],
@@ -114,6 +124,7 @@ class ResGetItemList {
     unitprice: json["unitprice"],
     standeruom: json["standeruom"],
     unitname: json["unitname"],
+    unitmaster: List<Unitmaster>.from(json["unitmaster"].map((x) => Unitmaster.fromJson(x))),
     // flagdeleted: json["flagdeleted"],
     // endeffdt: DateTime.parse(json["endeffdt"]),
     // minproductstockingodown: json["minproductstockingodown"],
@@ -126,6 +137,10 @@ class ResGetItemList {
     // sgstrate: json["sgstrate"].toDouble(),
     // igstrate: json["igstrate"],
     imageList: List<ImageList>.from(json["image_list"].map((x) => ImageList.fromJson(x))),
+    selectedUnitIndex: json["selectedUnitIndex"],
+    quantity: json["quantity"],
+    notes: json["notes"],
+    selectedUnitMaster: json["selectedUnitMaster"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -140,6 +155,7 @@ class ResGetItemList {
     "unitprice": unitprice,
     "standeruom": standeruom,
     "unitname": unitname,
+    "unitmaster": List<dynamic>.from(unitmaster.map((x) => x.toJson())),
     // "flagdeleted": flagdeleted,
     // "endeffdt": endeffdt.toIso8601String(),
     // "minproductstockingodown": minproductstockingodown,
@@ -152,6 +168,10 @@ class ResGetItemList {
     // "sgstrate": sgstrate,
     // "igstrate": igstrate,
     "image_list": List<dynamic>.from(imageList.map((x) => x.toJson())),
+    "selectedUnitIndex": selectedUnitIndex,
+    "quantity": quantity,
+    "notes": notes,
+    "selectedUnitMaster": selectedUnitMaster,
   };
 }
 
@@ -168,5 +188,25 @@ class ImageList {
 
   Map<String, dynamic> toJson() => {
     "ImageURL": imageUrl,
+  };
+}
+
+class Unitmaster {
+  Unitmaster({
+    this.unitmasterid,
+    this.unitname,
+  });
+
+  int unitmasterid;
+  String unitname;
+
+  factory Unitmaster.fromJson(Map<String, dynamic> json) => Unitmaster(
+    unitmasterid: json["unitmasterid"],
+    unitname: json["unitname"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "unitmasterid": unitmasterid,
+    "unitname": unitname,
   };
 }

@@ -4,17 +4,19 @@ import 'package:inventory_system/component/CustomPopup.dart';
 
 class FullScreenDialog extends StatefulWidget {
 
-  FullScreenDialog({this.units, this.completion, this.quantity, this.notes, this.dropdownValue});
+  FullScreenDialog({this.units, this.completion, this.quantity, this.notes, this.dropdownValue, this.index});
 
   final List<UnitItem> units;
 
-  Function(UnitItem,int,String) completion;
+  Function(UnitItem,int,String,int) completion;
 
   int quantity = 0;
 
   String notes = "";
 
   UnitItem dropdownValue;
+
+  int index = 0;
 
   @override
   FullScreenDialogState createState() => new FullScreenDialogState();
@@ -46,7 +48,7 @@ class FullScreenDialogState extends State<FullScreenDialog> {
       quantity = widget.quantity ?? 0;
       notes = widget.notes;
       if(widget.dropdownValue != null){
-        dropdownValue = widget.units.first;
+        dropdownValue = widget.units[widget.index ?? 0];
       }
     });
 
@@ -78,6 +80,15 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                     onChanged: (UnitItem newValue) {
                       setState(() {
                         dropdownValue = newValue;
+
+                        widget.units.asMap().forEach((index, value) {
+
+                          if(value.unitId == newValue.unitId){
+                            widget.index = index;
+                          }
+
+                        });
+
                       });
                     },
                     items: widget.units.map<DropdownMenuItem<UnitItem>>((UnitItem value) {
@@ -93,6 +104,7 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                   child: TextField(
                     controller: _quantityController,
                     onChanged: (value) {
+                      print(value);
                       quantity = int.parse(value);
                     },
                     keyboardType: TextInputType.number,
@@ -163,7 +175,7 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                                     return;
                                   }
 
-                                  widget.completion(dropdownValue,quantity,notes);
+                                  widget.completion(dropdownValue,quantity,notes,widget.index);
                                   Navigator.pop(context);
                                 },
                                 child: Text(
