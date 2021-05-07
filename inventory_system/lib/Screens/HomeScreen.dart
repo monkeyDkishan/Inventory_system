@@ -16,6 +16,7 @@ import 'package:inventory_system/data/models/InvoiceModel.dart';
 import 'package:inventory_system/data/models/UserModel.dart';
 import 'package:inventory_system/data/models/res/ResGetCategoryList.dart';
 import 'package:inventory_system/services/CartService.dart';
+import 'package:inventory_system/services/userPreferencesService.dart';
 import 'package:inventory_system/services/webService.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -48,7 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     updateCount();
-    UserModel.getProfileDetails(completion: (res) {});
+    UserModel.getProfileDetails(completion: (res) async {
+    });
 
     InvoiceModel.getTotalOutStandings(completion: (res){
 

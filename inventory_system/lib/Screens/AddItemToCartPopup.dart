@@ -94,7 +94,7 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                     items: widget.units.map<DropdownMenuItem<UnitItem>>((UnitItem value) {
                       return DropdownMenuItem<UnitItem>(
                         value: value,
-                        child: Text(value.unitName ?? ""),
+                        child: Text('${(value.unitName ?? "")} for Rs. ${(value.unitPrice ?? 0.0)}'),
                       );
                     }).toList(),
                   ),

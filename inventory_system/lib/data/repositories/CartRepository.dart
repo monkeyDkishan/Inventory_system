@@ -1,4 +1,6 @@
 import 'package:inventory_system/Utilities/constants.dart';
+import 'package:inventory_system/data/models/req/ReqAddOrderDetails.dart';
+import 'package:inventory_system/data/models/res/ResAddOrderDetails.dart';
 import 'package:inventory_system/data/models/res/ResCMS.dart';
 import 'package:inventory_system/data/models/res/ResGetDeliveryType.dart';
 import 'package:inventory_system/data/models/res/ResGetInvoiceList.dart';
@@ -14,5 +16,15 @@ class CartRepository{
 
     return ResGetDeliveryType.fromJson(res);
   }
+
+  Future<ResAddOrderDetails> addOrder({ReqAddOrderDetails req}) async{
+
+    print(req.toJson());
+
+    var res = await _webService.postApi(kAddOrderDetails, req.toJson());
+
+    return ResAddOrderDetails.fromJson(res);
+  }
+
 
 }

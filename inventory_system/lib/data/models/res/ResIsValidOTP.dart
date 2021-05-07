@@ -5,17 +5,30 @@ class ResIsValidOTP {
     this.status,
     this.message,
     this.data,
+    this.res
   });
 
   int status;
   String message;
   ResIsValidOTPData data;
+  String res;
 
-  factory ResIsValidOTP.fromJson(Map<String, dynamic> json) => ResIsValidOTP(
-    status: json["Status"],
-    message: json["Message"],
-    data: ResIsValidOTPData.fromJson(json["data"]),
-  );
+  factory ResIsValidOTP.fromJson(Map<String, dynamic> json) {
+
+    if (json["data"] != null){
+      return ResIsValidOTP(
+        status: json["Status"],
+        message: json["Message"],
+        data: ResIsValidOTPData.fromJson(json["data"]),
+      );
+    }else{
+      return ResIsValidOTP(
+        status: json["Status"],
+        message: json["Message"],
+        res: json["Response"]
+      );
+    }
+  }
 
   Map<String, dynamic> toJson() => {
     "Status": status,

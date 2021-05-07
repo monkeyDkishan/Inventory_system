@@ -7,9 +7,11 @@ import 'package:inventory_system/component/CustomPopup.dart';
 import 'package:inventory_system/component/LoadingSmall.dart';
 import 'package:inventory_system/component/NoDataFoundContainer.dart';
 import 'package:inventory_system/data/models/CartModel.dart';
+import 'package:inventory_system/data/models/req/ReqAddOrderDetails.dart';
 import 'package:inventory_system/data/models/res/ResGetDeliveryType.dart';
 import 'package:inventory_system/data/models/res/ResGetItemList.dart';
 import 'package:inventory_system/services/CartService.dart';
+import 'package:inventory_system/services/userPreferencesService.dart';
 import 'package:inventory_system/services/webService.dart';
 
 class CartScreen extends StatefulWidget {
@@ -22,9 +24,13 @@ class _CartScreenState extends State<CartScreen> {
 
   CartList cart;
 
-  double total = 0;
+  double subTotal = 0.0;
+  
+  double finalTotal = 0.0;
 
-  double deliveryCharge = 0;
+  double deliveryCharge = 0.0;
+
+  double tcsCharge = 0.0;
 
   bool isLoading = false;
 
@@ -48,9 +54,29 @@ class _CartScreenState extends State<CartScreen> {
 
     print(priceTotal);
     setState(() {
-      total = priceTotal ?? 0.0;
+      finalTotal = priceTotal ?? 0.0;
+      subTotal = priceTotal ?? 0.0;
+
       cart = res;
     });
+
+  }
+
+  getTCSCharge() async {
+    final user = await UserPreferencesService().getUser();
+
+    if(user.isTCSApply ?? false){
+      tcsCharge = ((subTotal + deliveryCharge) * (user.tcsAmountPercentage ?? 0.0))/100;
+    }else{
+      final tcs = ((subTotal + deliveryCharge) + (user.tcsAmount ?? 0.0)) - (user.tcsLimit ?? 0.0);
+      print(tcs);
+      if(tcs > 0){
+        tcsCharge = (tcs * (user.tcsAmountPercentage ?? 0.0))/100;
+      }else{
+        tcsCharge = 0.0;
+      }
+
+    }
 
   }
 
@@ -67,12 +93,66 @@ class _CartScreenState extends State<CartScreen> {
             isLoading = false;
             deliveryTypes = res.data.data.list;
             dropdownValue = deliveryTypes.first;
-
             deliveryCharge = dropdownValue.price ?? 0.0;
-
+            finalTotal = subTotal + deliveryCharge;
+            getTCSCharge();
           });
           break;
         case Status.ERROR:
+          setState(() {
+            isLoading = false;
+          });
+          CustomPopup(context,
+              title: 'Sorry', message: res.msg ?? "Error", primaryBtnTxt: 'OK');
+          break;
+      }
+    });
+  }
+
+  completeOrder(){
+
+    List<ReqCartItemAddOrderDetails> cartItems = [];
+    
+    cart.cart.forEach((element) { 
+      
+      cartItems.add(ReqCartItemAddOrderDetails(
+        note: element.note,
+        quantity: element.quantity,
+        selectedUnitId: element.unitId,
+        productid: element.productid,
+        subcategoryid: element.subcategoryid,
+        categoryid: element.categoryid
+      ));
+      
+    });
+
+    CartModel.addOrder(
+      cartItems: cartItems,
+        subTotal: subTotal,
+        finalTotal: finalTotal,
+        selectedDeliveryType: dropdownValue.deliveryid ?? 0,
+        deliveryCharge: deliveryCharge,
+        completion: (res) async {
+      switch (res.state) {
+        case Status.LOADING:
+          setState(() {
+            isLoading = true;
+          });
+          break;
+        case Status.COMPLETED:
+          
+          setState(() {
+            isLoading = false;
+          });
+
+          await CartService.emptyCart();
+
+          CustomPopup(context, title: '', message: res.data.data ?? 'Order Placed', primaryBtnTxt: 'OK',primaryAction: (){
+            Navigator.of(context).pop();
+          });
+          break;
+        case Status.ERROR:
+          print('Called');
           setState(() {
             isLoading = false;
           });
@@ -169,6 +249,7 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                   Text(
                                     res.note ?? "notes",
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: Colors.grey,
@@ -200,6 +281,7 @@ class _CartScreenState extends State<CartScreen> {
                                             });
                                           },
                                           child: Text("REMOVE",style: TextStyle(color: Colors.red),)),
+                                      // if(false)
                                       Container(
                                         child: TextButton(
                                           onPressed: (){
@@ -208,7 +290,7 @@ class _CartScreenState extends State<CartScreen> {
 
                                             res.unitmaster.forEach((element) {
 
-                                              units.add(UnitItem(unitId: element.unitmasterid ?? 0,unitPrice: res.unitPrice,unitName: element.unitname ?? ""));
+                                              units.add(UnitItem(unitId: element.unitmasterid ?? 0,unitPrice: element.unitPrize,unitName: element.unitname ?? ""));
 
                                             });
 
@@ -222,12 +304,13 @@ class _CartScreenState extends State<CartScreen> {
                                                 units: units,
                                                 completion: (unit, quantity, notes, id) async {
 
-                                                  print('cool');
                                                   print(id);
 
                                                   CartService.editItemObj(index,Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageUrl,unitName: unit.unitName,unitPrice: unit.unitPrice ?? 0.0,unitId: unit.unitId,quantity: quantity,note: notes,unitmaster: res.unitmaster,selectedIndex: id));
 
                                                   getCart();
+
+                                                  getTCSCharge();
 
                                                 },
                                               ),
@@ -301,6 +384,9 @@ class _CartScreenState extends State<CartScreen> {
                             setState(() {
                               dropdownValue = newValue;
                               deliveryCharge = dropdownValue.price ?? 0.0;
+                              finalTotal = subTotal + deliveryCharge;
+                              print('cool');
+                              getTCSCharge();
                             });
                           },
                           items: deliveryTypes
@@ -325,12 +411,18 @@ class _CartScreenState extends State<CartScreen> {
                             style:
                                 TextStyle(fontSize: 15, color: Colors.white),
                           ),
-                          Text(
-                            "${total ?? 0.0}",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                          SizedBox(width: 5),
+                          Expanded(
+                            child: Text(
+                              "${subTotal ?? 0.0}",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
                           )
                         ],
                       ),
@@ -345,12 +437,44 @@ class _CartScreenState extends State<CartScreen> {
                             style:
                             TextStyle(fontSize: 15, color: Colors.white),
                           ),
+                          SizedBox(width: 5),
+                          Expanded(
+                            child: Text(
+                              '${dropdownValue.price ?? 0.0}',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                           Text(
-                            '${dropdownValue.price ?? 0.0}',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                            "TCS Charge",
+                            style:
+                            TextStyle(fontSize: 15, color: Colors.white),
+                          ),
+                          SizedBox(width: 5),
+                          Expanded(
+                            child: Text(
+                              '$tcsCharge',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
                           )
                         ],
                       ),
@@ -359,6 +483,9 @@ class _CartScreenState extends State<CartScreen> {
                       height: 50,
                       color: Colors.black12,
                       child: InkWell(
+                        onTap: (){
+                          completeOrder();
+                        },
                         child: Center(
                           child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
@@ -370,9 +497,16 @@ class _CartScreenState extends State<CartScreen> {
                                   style:
                                   TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                                 ),
-                                Text(
-                                  "${(deliveryCharge ?? 0.0) + (total ?? 0.0)}",
-                                  style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    "${(finalTotal ?? 0.0)}",
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    textAlign: TextAlign.end,
+                                    style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                                  ),
                                 )
                               ],
                             ),

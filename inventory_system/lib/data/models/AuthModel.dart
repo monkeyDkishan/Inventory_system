@@ -32,7 +32,7 @@ class AuthModel{
       BaseRes res = await _authRepo.isValidMobileApi(mobile);
 
       if(res.status == 0){
-        throw res.message;
+        throw res.data;
       }
       // else if(res.status == 2){
       //   //UN AUTHORISE
@@ -45,7 +45,7 @@ class AuthModel{
       completion(apiRes);
     }catch(e){
       print(e);
-      apiRes.msg = e;
+      apiRes.msg = e.toString();
       apiRes.state = Status.ERROR;
       completion(apiRes);
     }
@@ -64,7 +64,7 @@ class AuthModel{
       ResIsValidOTP res = await _authRepo.isValidOTPApi(AuthModel.mobile, otp);
 
       if(res.status == 0){
-        throw res.message;
+        throw res.res ?? "Error";
       }
       // else if(res.status == 2){
       //   //UN AUTHORISE
@@ -72,14 +72,14 @@ class AuthModel{
 
       final prefs = UserPreferencesService();
       
-      prefs.saveUser(MyUser(token: '${res.data.tokenType} ${res.data.accesstoken}',isUserLogin: true,id: 0));
+      prefs.saveUser(MyUser(token: '${res.data.tokenType} ${res.data.accesstoken}',isUserLogin: true,id: 0,tcsLimit: 0,tcsAmountPercentage: 0.0,tcsAmount: 0.0,isTCSApply: false));
       
       apiRes.data = res;
       apiRes.state = Status.COMPLETED;
       completion(apiRes);
     }catch(e){
       print(e);
-      apiRes.msg = e;
+      apiRes.msg = e.toString();
       apiRes.state = Status.ERROR;
       completion(apiRes);
     }

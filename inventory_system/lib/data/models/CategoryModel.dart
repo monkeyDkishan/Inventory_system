@@ -94,7 +94,7 @@ class CategoryModel {
       completion(itemRes);
     } catch (e) {
       print(e);
-      itemRes.msg = e;
+      itemRes.msg = e.toString();
       itemRes.state = Status.ERROR;
       completion(itemRes);
     }

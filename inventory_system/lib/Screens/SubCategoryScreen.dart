@@ -166,7 +166,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
                                           res.unitmaster.forEach((element) {
 
-                                            units.add(UnitItem(unitId: element.unitmasterid ?? 0,unitPrice: res.unitprice,unitName: element.unitname ?? ""));
+                                            units.add(UnitItem(unitId: element.unitmasterid ?? 0,unitPrice: element.unitPrize,unitName: element.unitname ?? ""));
 
                                           });
 

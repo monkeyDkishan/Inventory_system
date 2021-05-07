@@ -52,7 +52,6 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         child: SingleChildScrollView(
           child: Container(
-            height: size.height,
             child: SafeArea(
               child: Container(
                 padding: EdgeInsets.all(20),
@@ -62,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     Column(
                       children: [
+                        SizedBox(height: 30),
                         Center(child: Text(translate("welcome_to_app_LOGIN_SCREEN"),style: TextStyle(
                             fontFamily: FontUtil.regular_fonts,
                             fontSize: 30
@@ -73,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontFamily: FontUtil.regular_fonts,
                           fontSize: 20,
                         ),textAlign: TextAlign.center,)),
+                        SizedBox(height: 40),
                       ],
                     ),
 
@@ -99,8 +100,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               if(isLoading){return;}
 
-
-
                               AuthModel.validateMobile(mobile: _controller.text,completion: (res){
 
                                 switch(res.state){
@@ -112,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   case Status.COMPLETED:
                                     setState(() {
                                       isLoading = false;
-                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => OTPScreen()));
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginOTPScreen()));
                                     });
                                     break;
                                   case Status.ERROR:

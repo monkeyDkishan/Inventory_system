@@ -18,7 +18,7 @@ class UserModel {
       return null;
     }
   }
-  static Future getProfileDetails({Function(ApiResponse) completion}) async {
+  static Future getProfileDetails({Function(ApiResponse<ResGetProfileDetails>) completion}) async {
 
     try {
       apiRes.state = Status.LOADING;
@@ -36,10 +36,26 @@ class UserModel {
 
       apiRes.data = res;
       apiRes.state = Status.COMPLETED;
+
+      final data = res.data.list.first;
+
+      final prefs = UserPreferencesService();
+
+      final user = await prefs.getUser();
+
+      print("Tcs Data");
+
+      print(data.partyid);
+      print(data.tcsLimit);
+      print(data.tcsAmountPercentage);
+
+      await prefs.saveUser(MyUser(token: user.token ?? '',isUserLogin: user.isUserLogin,id: data.partyid ?? 0,tcsLimit: data.tcsLimit,tcsAmountPercentage: data.tcsAmountPercentage,tcsAmount: data.tcsAmount,isTCSApply: data.isTcsApply));
+
       completion(apiRes);
     } catch (e) {
+      print("ERROR:-");
       print(e);
-      apiRes.msg = e;
+      apiRes.msg = e.toString();
       apiRes.state = Status.ERROR;
       completion(apiRes);
     }

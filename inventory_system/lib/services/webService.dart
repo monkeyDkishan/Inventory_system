@@ -62,7 +62,7 @@ class WebService {
     return responseJson;
   }
 
-  Future<dynamic> postApi(String path, Map<String, String> body) async {
+  Future<dynamic> postApi(String path, Map<String, dynamic> body) async {
     var responseJson;
     try {
       var user = await UserPreferencesService().getUser();

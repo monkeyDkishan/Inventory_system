@@ -20,7 +20,7 @@ class CartBloc{
 }
 
 class CartService{
-  static final cartKey = 'sodapanii';
+  static final cartKey = 'cool_cart';
 
   CartList cart;
 
@@ -153,6 +153,7 @@ class CartService{
       var obj = prefs.getString(cartKey);
 
       print(obj);
+
       var res = welcomeFromJson(obj);
 
       return res;
@@ -160,6 +161,19 @@ class CartService{
       print(e);
     }
 
+  }
+
+  static Future<bool> emptyCart() async {
+    try{
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      var cool = await prefs.remove(cartKey);
+
+      return cool;
+    }catch(e){
+      print(e);
+      return false;
+    }
   }
 
 }

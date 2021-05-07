@@ -61,7 +61,6 @@ class ResGetItemList {
     this.code,
     this.subcategoryid,
     this.description,
-    this.unitprice,
     this.standeruom,
     this.unitname,
     this.unitmaster,
@@ -91,7 +90,6 @@ class ResGetItemList {
   String code;
   int subcategoryid;
   String description;
-  double unitprice;
   int standeruom;
   String unitname;
   List<Unitmaster> unitmaster;
@@ -121,7 +119,6 @@ class ResGetItemList {
     code: json["code"],
     subcategoryid: json["Subcategoryid"],
     description: json["description"],
-    unitprice: json["unitprice"],
     standeruom: json["standeruom"],
     unitname: json["unitname"],
     unitmaster: List<Unitmaster>.from(json["unitmaster"].map((x) => Unitmaster.fromJson(x))),
@@ -152,7 +149,6 @@ class ResGetItemList {
     "code": code,
     "Subcategoryid": subcategoryid,
     "description": description,
-    "unitprice": unitprice,
     "standeruom": standeruom,
     "unitname": unitname,
     "unitmaster": List<dynamic>.from(unitmaster.map((x) => x.toJson())),
@@ -195,18 +191,22 @@ class Unitmaster {
   Unitmaster({
     this.unitmasterid,
     this.unitname,
+    this.unitPrize,
   });
 
   int unitmasterid;
   String unitname;
+  double unitPrize;
 
   factory Unitmaster.fromJson(Map<String, dynamic> json) => Unitmaster(
     unitmasterid: json["unitmasterid"],
     unitname: json["unitname"],
+    unitPrize: json["UnitPrize"]
   );
 
   Map<String, dynamic> toJson() => {
     "unitmasterid": unitmasterid,
     "unitname": unitname,
+    "UnitPrize": unitPrize,
   };
 }

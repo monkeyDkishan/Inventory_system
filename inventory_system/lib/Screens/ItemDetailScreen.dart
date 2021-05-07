@@ -68,7 +68,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
 
     widget.itemDetail.unitmaster.forEach((element) {
 
-      units.add(UnitItem(unitId: element.unitmasterid ?? 0,unitPrice: widget.itemDetail.unitprice,unitName: element.unitname ?? ""));
+      units.add(UnitItem(unitId: element.unitmasterid ?? 0,unitPrice: element.unitPrize,unitName: element.unitname ?? ""));
 
     });
 
@@ -188,7 +188,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               },
               child: Center(
                   child: Text(
-                "Add to cart (Rs. ${widget.itemDetail.unitprice})",
+                "Add to cart",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
