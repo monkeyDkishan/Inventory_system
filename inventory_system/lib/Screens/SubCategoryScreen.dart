@@ -46,6 +46,10 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
       setState(() {
         totalCartItem = cart.cart.length ?? 0;
       });
+    }else{
+      setState(() {
+        totalCartItem = 0;
+      });
     }
   }
 

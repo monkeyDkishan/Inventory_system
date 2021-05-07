@@ -39,6 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         totalCartItem = cart.cart.length ?? 0;
       });
+    }else{
+      setState(() {
+        totalCartItem = 0;
+      });
     }
   }
 
@@ -218,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GridView.count(
                   // Create a grid with 2 columns. If you change the scrollDirection to
                   // horizontal, this produces 2 rows.
-                  crossAxisCount: 2,
+                  crossAxisCount: size.width > 500 ? 4 : 2,
                   childAspectRatio: 0.9,
                   // Generate 100 widgets that display their index in the List.
                   children: List.generate(searchedList.length, (index) {

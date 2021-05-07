@@ -492,7 +492,7 @@ class _CartScreenState extends State<CartScreen> {
                                 Text(
                                   "PLACE ORDER",
                                   style:
-                                  TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                                  TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(width: 10),
                                 Expanded(
@@ -502,7 +502,7 @@ class _CartScreenState extends State<CartScreen> {
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     textAlign: TextAlign.end,
-                                    style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                                    style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
                                   ),
                                 )
                               ],
