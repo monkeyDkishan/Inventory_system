@@ -62,22 +62,23 @@ class _CartScreenState extends State<CartScreen> {
 
   }
 
-  getTCSCharge() async {
+  Future getTCSCharge() async {
     final user = await UserPreferencesService().getUser();
 
     if(user.isTCSApply ?? false){
-      tcsCharge = ((subTotal + deliveryCharge) * (user.tcsAmountPercentage ?? 0.0))/100;
+      tcsCharge = ((subTotal.toDouble() + deliveryCharge.toDouble()) * (user.tcsAmountPercentage.toDouble() ?? 0.0))/100.toDouble();
+      print('cool1');
     }else{
-      final tcs = ((subTotal + deliveryCharge) + (user.tcsAmount ?? 0.0)) - (user.tcsLimit ?? 0.0);
-      print(tcs);
+      final tcs = ((subTotal.toDouble() + deliveryCharge.toDouble()) + (user.tcsAmount.toDouble() ?? 0.0)) - (user.tcsLimit.toDouble() ?? 0.0);
       if(tcs > 0){
-        tcsCharge = (tcs * (user.tcsAmountPercentage ?? 0.0))/100;
+        tcsCharge = (tcs.toDouble() * (user.tcsAmountPercentage.toDouble() ?? 0.0))/100;
+        print('cool2');
       }else{
         tcsCharge = 0.0;
+        print('cool3');
       }
-
     }
-
+    finalTotal = subTotal.toDouble() + deliveryCharge.toDouble() + tcsCharge.toDouble();
   }
 
   getDeliveryType() async {
@@ -89,12 +90,11 @@ class _CartScreenState extends State<CartScreen> {
           });
           break;
         case Status.COMPLETED:
-          setState(() {
+          setState((){
             isLoading = false;
             deliveryTypes = res.data.data.list;
             dropdownValue = deliveryTypes.first;
             deliveryCharge = dropdownValue.price ?? 0.0;
-            finalTotal = subTotal + deliveryCharge;
             getTCSCharge();
           });
           break;
@@ -176,7 +176,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget buildContainer() {
 
     if(isLoading){
-      return LoadingSmall();
+      return LoadingSmall(color: ColorUtil.primoryColor,);
     }
 
     if(cart == null || cart.cart.length <= 0){
@@ -302,7 +302,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 quantity: res.quantity,
                                                 notes: res.note,
                                                 units: units,
-                                                completion: (unit, quantity, notes, id) async {
+                                                completion: (unit, quantity, notes, id){
 
                                                   print(id);
 
@@ -311,7 +311,6 @@ class _CartScreenState extends State<CartScreen> {
                                                   getCart();
 
                                                   getTCSCharge();
-
                                                 },
                                               ),
                                               fullscreenDialog: true,
@@ -381,11 +380,9 @@ class _CartScreenState extends State<CartScreen> {
                           elevation: 16,
                           underline: Container(),
                           onChanged: (ResGetDeliveryTypeListElement newValue) {
-                            setState(() {
+                            setState((){
                               dropdownValue = newValue;
                               deliveryCharge = dropdownValue.price ?? 0.0;
-                              finalTotal = subTotal + deliveryCharge;
-                              print('cool');
                               getTCSCharge();
                             });
                           },

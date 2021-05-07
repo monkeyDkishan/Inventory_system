@@ -72,11 +72,14 @@ class WebService {
       print('URL: $uri, Req: $body');
       print('Header: ${user.token}');
 
+      print(jsonEncode(body));
+
       final response = await http.post(
           uri,
-          body: body,
+          body: jsonEncode(body),
           headers: {
-            "Authorization": '${user.token}'
+            "Authorization": '${user.token}',
+            "Content-Type":"application/json"
           }
       );
 

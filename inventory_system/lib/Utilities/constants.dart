@@ -15,5 +15,6 @@ const String kGetTotalOutStanding = "GetTotalOutStanding";
 const String kGetInvoiceList = "getInvoiceList";
 const String kGetDeliveryType = "GetDeliveryType";
 const String kAddOrderDetails = "addOrderDetails";
+const String kGetMobileNotification = "getMobileNotification";
 
 const String kImgUrl = "https://santkrupa.s3.ap-south-1.amazonaws.com/";

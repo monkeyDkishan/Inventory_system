@@ -84,60 +84,62 @@ class _InvoiceListScreenState extends State<InvoiceListScreen> {
           itemCount: resList.length,
           itemBuilder: (BuildContext context, int index){
             final data = resList[index];
-            return Container(
-              margin: EdgeInsets.symmetric(horizontal: 5),
-              child: GestureDetector(
-                child: Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: size.width*0.6,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(data.partyname,style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500
-                              ),
-                                softWrap: true,
-                              ),
-                              SizedBox(height: 10,),
-                              Text( 'Bill Number : ' + data.billnumber.toString()),
-                            ],
-                          ),
-                        ),
-                        // Icon(Icons.arrow_forward_ios)
-                        Container(
-                          width: size.width*0.3,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(data.totalpayableinstr),
-                              SizedBox(height: 10,),
-                              Container(
-                                padding: EdgeInsets.symmetric(vertical: 2.5,horizontal: 5),
-                                decoration: BoxDecoration(
-                                  color: data.isamountpaid ? Colors.green[300] : Colors.red[300],
-                                  borderRadius: BorderRadius.circular(5)
+            return FittedBox(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: GestureDetector(
+                  child: Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: size.width*0.6,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(data.partyname,style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500
                                 ),
-                                child: Text(data.isamountpaid ? "Paid" : "Not Paid",style: TextStyle(
-                                  color: Colors.white
-                                ),),
-                              )
-                            ],
+                                  softWrap: true,
+                                ),
+                                SizedBox(height: 10,),
+                                Text( 'Bill Number : ' + data.billnumber.toString()),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          // Icon(Icons.arrow_forward_ios)
+                          Container(
+                            width: size.width*0.3,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(data.totalpayableinstr),
+                                SizedBox(height: 10,),
+                                Container(
+                                  padding: EdgeInsets.symmetric(vertical: 2.5,horizontal: 5),
+                                  decoration: BoxDecoration(
+                                    color: data.isamountpaid ? Colors.green[300] : Colors.red[300],
+                                    borderRadius: BorderRadius.circular(5)
+                                  ),
+                                  child: Text(data.isamountpaid ? "Paid" : "Not Paid",style: TextStyle(
+                                    color: Colors.white
+                                  ),),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => InvoiceDetailsScreen(orderId: data.orderid,),));
+                  },
                 ),
-                onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => InvoiceDetailsScreen(orderId: data.orderid,),));
-                },
               ),
             );
           },

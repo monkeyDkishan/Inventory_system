@@ -110,7 +110,7 @@ class ReqAddOrderDetails {
     cartItems: List<ReqCartItemAddOrderDetails>.from(json["cart_items"].map((x) => ReqCartItemAddOrderDetails.fromJson(x))),
   );
 
-  Map<String, String> toJson() => {
+  Map<String, dynamic> toJson() => {
     "selected_delivery_type": selectedDeliveryType.toString(),
     "sub_total": subTotal.toString(),
     "delivery_charge": deliveryCharge.toString(),
@@ -118,7 +118,7 @@ class ReqAddOrderDetails {
     "tcsamount": tcsamount.toString(),
     "tcsamountpercentage": tcsamountpercentage.toString(),
     "partyid": partyid.toString(),
-    "cart_items": List<dynamic>.from(cartItems.map((x) => x.toJson())).toString(),
+    "cart_items": List<dynamic>.from(cartItems.map((x) => x.toJson())),
   };
 }
 

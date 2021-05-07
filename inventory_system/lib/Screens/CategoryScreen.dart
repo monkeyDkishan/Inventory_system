@@ -37,9 +37,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   updateCount() async {
     var cart = await CartService.getCarts();
-    setState(() {
-      totalCartItem = cart.cart.length ?? 0;
-    });
+    updateCount() async {
+      var cart = await CartService.getCarts();
+      if(cart != null){
+        setState(() {
+          totalCartItem = cart.cart.length ?? 0;
+        });
+      }
+    }
   }
 
   @override
