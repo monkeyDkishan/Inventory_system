@@ -5,13 +5,12 @@ class ResIsValidOTP {
     this.status,
     this.message,
     this.data,
-    this.res
   });
 
   int status;
   String message;
   ResIsValidOTPData data;
-  String res;
+
 
   factory ResIsValidOTP.fromJson(Map<String, dynamic> json) {
 
@@ -25,7 +24,6 @@ class ResIsValidOTP {
       return ResIsValidOTP(
         status: json["Status"],
         message: json["Message"],
-        res: json["Response"]
       );
     }
   }

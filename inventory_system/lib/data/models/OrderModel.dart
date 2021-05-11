@@ -10,14 +10,14 @@ class OrderModel {
   static var apiRes = ApiResponse<ResGetBillDetails>();
 
 
-  static Future getOrder({Function(ApiResponse<ResGetBillDetails>) completion}) async {
+  static Future getOrder({String toDate,String fromDate,Function(ApiResponse<ResGetBillDetails>) completion}) async {
 
     try {
       apiRes.state = Status.LOADING;
 
       completion(apiRes);
 
-      ResGetBillDetails res = await _userRepo.getOrders(toDate: "10/22/2021",fromDate: "2/12/2019");
+      ResGetBillDetails res = await _userRepo.getOrders(toDate: toDate,fromDate: fromDate);
 
       if (res.status == 0) {
         throw res.message;

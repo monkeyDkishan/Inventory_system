@@ -26,7 +26,7 @@ class CategoryRepository{
     var res = await _webService.getApiWithQuery(kGetItemList, {
       "CategoryID" : categoryId.toString(),
       "SubCategoryID" : subCategoryId.toString(),
-      "ProductID" : productId.toString(),
+      // "ProductID" : productId.toString(),
     });
 
     return ResGetItem.fromJson(res);

@@ -10,11 +10,21 @@ class ResGetCategory {
   String message;
   ResGetCategoryData data;
 
-  factory ResGetCategory.fromJson(Map<String, dynamic> json) => ResGetCategory(
-    status: json["Status"],
-    message: json["Message"],
-    data: ResGetCategoryData.fromJson(json["data"]),
-  );
+  factory ResGetCategory.fromJson(Map<String, dynamic> json) {
+
+      if(json["data"] == null){
+        return ResGetCategory(
+          status: json["Status"],
+          message: json["Message"]
+        );
+      }else{
+        return ResGetCategory(
+          status: json["Status"],
+          message: json["Message"],
+          data: ResGetCategoryData.fromJson(json["data"]),
+        );
+      }
+    }
 
   Map<String, dynamic> toJson() => {
     "Status": status,

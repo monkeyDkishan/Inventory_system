@@ -32,7 +32,7 @@ class AuthModel{
       BaseRes res = await _authRepo.isValidMobileApi(mobile);
 
       if(res.status == 0){
-        throw res.data;
+        throw res.message;
       }
       // else if(res.status == 2){
       //   //UN AUTHORISE
@@ -64,7 +64,7 @@ class AuthModel{
       ResIsValidOTP res = await _authRepo.isValidOTPApi(AuthModel.mobile, otp);
 
       if(res.status == 0){
-        throw res.res ?? "Error";
+        throw res.message ?? "Error";
       }
       // else if(res.status == 2){
       //   //UN AUTHORISE

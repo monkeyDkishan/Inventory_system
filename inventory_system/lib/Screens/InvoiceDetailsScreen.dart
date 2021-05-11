@@ -1,5 +1,9 @@
 
+import 'dart:io';
+
+import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory_system/Screens/PaymentScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/component/CustomPopup.dart';
 import 'package:inventory_system/component/LoadingSmall.dart';
@@ -55,6 +59,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
       }
     });
 
+  }
+
+  getAllApp() async {
+    final apps =  gePaymentApps();
   }
 
   @override
@@ -143,26 +151,64 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(20),
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 2.5,horizontal: 10),
-                decoration: BoxDecoration(
-                    color: resData.isamountpaid ? Colors.green[300] : Colors.red[300],
-                    borderRadius: BorderRadius.circular(5)
-                ),
-                child: Text(resData.isamountpaid ? "Paid" : "Not Paid",style: TextStyle(
-                    color: Colors.white,
-                  fontSize: 20
-                ),),
-              ),
-            ),
-          )
+          buildContainer()
         ],
       ),
     );
+  }
+
+  Future<List<Application>> gePaymentApps() async {
+    Application gPayApp = await DeviceApps.getApp('com.google.android.apps.walletnfcrel');
+    Application paytmApp = await DeviceApps.getApp('net.one97.paytm');
+    Application phonePayApp = await DeviceApps.getApp('com.phonepe.app');
+
+    List<Application> apps;
+    apps.add(gPayApp);
+    apps.add(paytmApp);
+    apps.add(phonePayApp);
+
+    return apps;
+  }
+
+  Container buildContainer() {
+
+    if (Platform.isAndroid){
+      if (!resData.isamountpaid){
+        return Container(
+          height: 44,
+          color: ColorUtil.primoryColor,
+          child: TextButton(
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentScreen(),));
+            },
+            child: Text('Pay',
+              style: TextStyle(
+                  color: Colors.white
+              ),
+            ),
+          ),
+        );
+      }
+    }
+
+
+    return Container(
+          padding: EdgeInsets.all(20),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 2.5,horizontal: 10),
+              decoration: BoxDecoration(
+                  color: resData.isamountpaid ? Colors.green[300] : Colors.red[300],
+                  borderRadius: BorderRadius.circular(5)
+              ),
+              child: Text(resData.isamountpaid ? "Paid" : "Not Paid",style: TextStyle(
+                  color: Colors.white,
+                fontSize: 20
+              ),),
+            ),
+          ),
+        );
   }
 
   Widget totalRow({String title,String price,bool isLast}) {

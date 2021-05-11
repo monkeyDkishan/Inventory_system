@@ -8,10 +8,12 @@ import 'package:inventory_system/Screens/LoginScreen.dart';
 import 'package:inventory_system/Screens/NotificationsList.dart';
 import 'package:inventory_system/Screens/ProfileScreen.dart';
 import 'package:inventory_system/Screens/StatementListScreen.dart';
+import 'package:inventory_system/Screens/dateScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/Utilities/ImageUtil.dart';
 import 'package:inventory_system/data/models/ServiceModel.dart';
 import 'package:inventory_system/data/models/UserModel.dart';
+import 'package:inventory_system/services/userPreferencesService.dart';
 
 var screens = [
   "Statement",
@@ -23,7 +25,8 @@ var screens = [
 ];
 
 var screens_clasees = [
-  StatementListScreen(),
+  DateScreen(),
+  // StatementListScreen(),
   NotificationList(),
   CMSPagesScreen(CMSType.Privacy),
   CMSPagesScreen(CMSType.Terms),
@@ -46,6 +49,7 @@ getDrawer(context) {
                   TextButton(
                     child: Text('YES'),
                     onPressed: () {
+                      UserPreferencesService().removeUser();
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(

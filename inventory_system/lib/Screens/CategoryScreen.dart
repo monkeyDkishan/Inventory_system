@@ -116,12 +116,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
             return ListTile(
               onTap: (){
+
+                print(res.subcategoryid);
+
                 Navigator.push(context, MaterialPageRoute(builder: (context) => SubCategoryScreen(subCategoryName: res.subCategoryName,productId: res.productid,subCategoryId: res.subcategoryid ?? 0,categoryId: res.categoryid,))).then((value) {
                   updateCount();
                 });
               },
-              title: Text(res.subCategoryName ?? "productName",style: TextStyle(color: Colors.black,fontSize: 20),),
-              subtitle: Text(res.description ?? "description"),
+              title: Text(res.subCategoryName ?? "Sub Category Name",style: TextStyle(color: Colors.black,fontSize: 20),),
+              // subtitle: Text(res.description ?? "description"),
               trailing: Icon(Icons.arrow_forward_ios_sharp,size: 20,),
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),

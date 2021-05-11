@@ -36,12 +36,18 @@ class ResGetSubCategoryData {
   int currentPage;
   List<ResGetSubCategoryList> list;
 
-  factory ResGetSubCategoryData.fromJson(Map<String, dynamic> json) => ResGetSubCategoryData(
-    totalRecords: json["TotalRecords"],
-    pageSize: json["PageSize"],
-    currentPage: json["CurrentPage"],
-    list: List<ResGetSubCategoryList>.from(json["list"].map((x) => ResGetSubCategoryList.fromJson(x))),
-  );
+  factory ResGetSubCategoryData.fromJson(Map<String, dynamic> json) {
+    if (json["list"] != null){
+      return ResGetSubCategoryData(
+        totalRecords: json["TotalRecords"],
+        pageSize: json["PageSize"],
+        currentPage: json["CurrentPage"],
+        list: List<ResGetSubCategoryList>.from(json["list"].map((x) => ResGetSubCategoryList.fromJson(x))),
+      );
+    }else{
+      return ResGetSubCategoryData();
+    }
+  }
 
   Map<String, dynamic> toJson() => {
     "TotalRecords": totalRecords,
@@ -107,7 +113,7 @@ class ResGetSubCategoryList {
     categoryName: json["CategoryName"],
     subCategoryName: json["SubCategoryName"],
     code: json["code"],
-    subcategoryid: json["Subcategoryid"],
+    subcategoryid: json["subcategoryid"],
     description: json["description"],
     unitprice: json["unitprice"],
     standeruom: json["standeruom"],

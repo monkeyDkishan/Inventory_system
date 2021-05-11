@@ -9,6 +9,12 @@ import 'package:inventory_system/data/models/res/ResGetBillDetails.dart';
 import 'package:inventory_system/services/webService.dart';
 
 class StatementListScreen extends StatefulWidget {
+  
+  final String fromDate;
+  final String toDate;
+
+  const StatementListScreen({this.fromDate, this.toDate});
+  
   @override
   _StatementListScreenState createState() => _StatementListScreenState();
 }
@@ -24,7 +30,7 @@ class _StatementListScreenState extends State<StatementListScreen> {
     // TODO: implement initState
     super.initState();
 
-    OrderModel.getOrder(completion: (res){
+    OrderModel.getOrder(toDate: widget.toDate,fromDate: widget.fromDate,completion: (res){
       switch (res.state) {
         case Status.LOADING:
           setState(() {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_system/Screens/AddItemToCartPopup.dart';
+import 'package:inventory_system/Screens/CartScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/Utilities/ImageUtil.dart';
 import 'package:inventory_system/Utilities/constants.dart';
@@ -22,6 +23,8 @@ class ItemDetailScreen extends StatefulWidget {
 class _ItemDetailScreenState extends State<ItemDetailScreen> {
 
   FullScreenDialog _myDialog;
+
+  CartList cartItem;
 
   static show({BuildContext context, WidgetBuilder builder}) {
     showDialog(
@@ -56,6 +59,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     if(cart != null){
       setState(() {
         totalCartItem = cart.cart.length ?? 0;
+        cartItem = cart;
       });
     }else{
       setState(() {
@@ -124,6 +128,10 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
+    bool exist = cartItem == null ? false : cartItem.cart.any((element) {
+      return element.productid == widget.itemDetail.productid ?? 0;
+    });
+
     return Scaffold(
       appBar: AppBar(
           title: Text('Item'),
@@ -182,6 +190,14 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
             color: ColorUtil.buttonColor,
             child: InkWell(
               onTap: () {
+
+                if(exist){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen())).then((value) {
+                    updateCount();
+                  });
+                  return;
+                }
+
                 //Open add to cart popup here
                 Navigator.push(
                     context,
@@ -194,7 +210,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               },
               child: Center(
                   child: Text(
-                "Add to cart",
+                    exist ? "Go To Cart" : "Add to cart",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

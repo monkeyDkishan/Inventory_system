@@ -10,11 +10,21 @@ class ResGetBillDetails {
   String message;
   GetBillDetailsData data;
 
-  factory ResGetBillDetails.fromJson(Map<String, dynamic> json) => ResGetBillDetails(
-    status: json["Status"],
-    message: json["Message"],
-    data: GetBillDetailsData.fromJson(json["data"]),
-  );
+  factory ResGetBillDetails.fromJson(Map<String, dynamic> json) {
+
+    if(json["data"] == null || json["data"] is String){
+      return ResGetBillDetails(
+        status: json["Status"],
+        message: json["Message"]
+      );
+    }else{
+      return ResGetBillDetails(
+        status: json["Status"],
+        message: json["Message"],
+        data: GetBillDetailsData.fromJson(json["data"]),
+      );
+    }
+  }
 
   Map<String, dynamic> toJson() => {
     "Status": status,

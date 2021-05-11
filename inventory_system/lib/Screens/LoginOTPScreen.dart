@@ -176,7 +176,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                                           setState(() {
                                             isLoading = false;
 
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
+                                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
 
                                           });
                                           break;

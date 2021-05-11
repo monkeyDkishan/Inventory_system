@@ -170,6 +170,13 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                                     return;
                                   }
 
+                                  final quantity = int.parse(_quantityController.text);
+
+                                  if(quantity == 0){
+                                    CustomPopup(context, title: 'Validate', message: 'Please enter quantity', primaryBtnTxt: 'OK');
+                                    return;
+                                  }
+
                                   if(_notesController.text.isEmpty){
                                     CustomPopup(context, title: 'Validate', message: 'Please enter notes', primaryBtnTxt: 'OK');
                                     return;

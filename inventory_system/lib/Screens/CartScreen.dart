@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_system/Screens/AddItemToCartPopup.dart';
+import 'package:inventory_system/Screens/InvoiceListScreen.dart';
+import 'package:inventory_system/Screens/StatementListScreen.dart';
+import 'package:inventory_system/Screens/StatementScreen.dart';
+import 'package:inventory_system/Screens/dateScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/Utilities/ImageUtil.dart';
 import 'package:inventory_system/Utilities/constants.dart';
@@ -147,8 +151,13 @@ class _CartScreenState extends State<CartScreen> {
 
           await CartService.emptyCart();
 
-          CustomPopup(context, title: '', message: res.data.data ?? 'Order Placed', primaryBtnTxt: 'OK',primaryAction: (){
-            Navigator.of(context).pop();
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => InvoiceListScreen(),), (route)
+          {
+            return route.isFirst;
+          });
+
+          CustomPopup(context, title: '', message: res.data.message ?? 'Order Placed', primaryBtnTxt: 'OK',primaryAction: (){
+
           });
           break;
         case Status.ERROR:
@@ -171,6 +180,10 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: buildContainer(),
     );
+  }
+
+  double getUpToTwoDecimals(double value){
+    return double.parse((value).toStringAsFixed(2));
   }
 
   Widget buildContainer() {
@@ -411,7 +424,7 @@ class _CartScreenState extends State<CartScreen> {
                           SizedBox(width: 5),
                           Expanded(
                             child: Text(
-                              "${subTotal ?? 0.0}",
+                              "${(subTotal ?? 0.0).toStringAsFixed(2)}",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end,
@@ -437,7 +450,7 @@ class _CartScreenState extends State<CartScreen> {
                           SizedBox(width: 5),
                           Expanded(
                             child: Text(
-                              '${dropdownValue.price ?? 0.0}',
+                              '${(dropdownValue.price ?? 0.0).toStringAsFixed(2)}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end,
@@ -463,7 +476,7 @@ class _CartScreenState extends State<CartScreen> {
                           SizedBox(width: 5),
                           Expanded(
                             child: Text(
-                              '$tcsCharge',
+                              '${tcsCharge.toStringAsFixed(2)}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end,
@@ -481,7 +494,11 @@ class _CartScreenState extends State<CartScreen> {
                       color: Colors.black12,
                       child: InkWell(
                         onTap: (){
-                          completeOrder();
+                          CustomPopup(context,
+                              title: 'Confirm', message: 'Are you sure you want to confirm this order?', primaryBtnTxt: 'YES',primaryAction: (){
+                                completeOrder();
+                              },secondaryBtnTxt: 'NO');
+
                         },
                         child: Center(
                           child: Container(
@@ -497,7 +514,7 @@ class _CartScreenState extends State<CartScreen> {
                                 SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
-                                    "${(finalTotal ?? 0.0)}",
+                                    "${(finalTotal ?? 0.0).toStringAsFixed(2)}",
                                     softWrap: false,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,

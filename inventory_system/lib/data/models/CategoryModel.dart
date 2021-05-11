@@ -19,30 +19,34 @@ class CategoryModel {
 
   static var itemRes = ApiResponse<ResGetItem>();
 
-  static Future getCategoryList({Function(ApiResponse<ResGetCategory>) completion}) async {
+  static Future getCategoryList({Function(ApiResponse<ResGetCategory>,bool) completion}) async {
+
+    bool isUserAuth = true;
 
     try {
       categoriesRes.state = Status.LOADING;
 
-      completion(categoriesRes);
+      completion(categoriesRes,isUserAuth);
 
       ResGetCategory res = await _userRepo.getCategoryListApi();
 
       if (res.status == 0) {
+        isUserAuth = true;
         throw res.message;
       }
-      // else if(res.status == 2){
-      //   //UN AUTHORISEa
-      // }
+      else if(res.status == 2){
+        isUserAuth = false;
+        throw res.message;
+      }
 
       categoriesRes.data = res;
       categoriesRes.state = Status.COMPLETED;
-      completion(categoriesRes);
+      completion(categoriesRes,isUserAuth);
     } catch (e) {
       print(e);
-      categoriesRes.msg = e;
+      categoriesRes.msg = e.toString();
       categoriesRes.state = Status.ERROR;
-      completion(categoriesRes);
+      completion(categoriesRes,isUserAuth);
     }
   }
 
@@ -67,7 +71,7 @@ class CategoryModel {
       completion(subCategoriesRes);
     } catch (e) {
       print(e);
-      subCategoriesRes.msg = e;
+      subCategoriesRes.msg = e.toString();
       subCategoriesRes.state = Status.ERROR;
       completion(subCategoriesRes);
     }

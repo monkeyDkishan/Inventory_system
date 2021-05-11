@@ -64,7 +64,7 @@ class CartModel {
 
       if (res.status == 0) {
         print('status reached');
-        throw res.data ?? "";
+        throw res.message ?? "";
       }
       // else if(res.status == 2){
       //   //UN AUTHORISEa

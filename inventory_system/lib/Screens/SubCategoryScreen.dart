@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_system/Screens/AddItemToCartPopup.dart';
+import 'package:inventory_system/Screens/CartScreen.dart';
 import 'package:inventory_system/Screens/ItemDetailScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/Utilities/ImageUtil.dart';
@@ -40,17 +41,23 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
   int totalCartItem = 0;
 
+  CartList cartItem;
+
   updateCount() async {
     var cart = await CartService.getCarts();
     if(cart != null){
       setState(() {
         totalCartItem = cart.cart.length ?? 0;
       });
+      setState(() {
+        cartItem = cart;
+      });
     }else{
       setState(() {
         totalCartItem = 0;
       });
     }
+
   }
 
   @override
@@ -81,6 +88,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
           break;
       }
     });
+
   }
 
   @override
@@ -118,6 +126,10 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
           itemBuilder: (BuildContext context, int index) {
 
             final res = resList[index];
+
+            bool exist = cartItem == null ? false : cartItem.cart.any((element) {
+              return element.productid == res.productid ?? 0;
+            });
 
             return Container(
               margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -167,6 +179,13 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                       InkWell(
                                         onTap: () async {
                                           //Add item in cart popup here
+
+                                          if (exist){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen())).then((value) {
+                                              updateCount();
+                                            });
+                                            return;
+                                          }
 
                                           units = [];
 
@@ -219,7 +238,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                               color: ColorUtil.buttonColor
                                           ),
                                           padding: EdgeInsets.all(10),
-                                          child: Text("ADD",style: TextStyle(color: Colors.white),),
+                                          child: Text(exist ? "Go To Cart" : "ADD",style: TextStyle(color: Colors.white),),
                                         ),
                                       )
                                     ],

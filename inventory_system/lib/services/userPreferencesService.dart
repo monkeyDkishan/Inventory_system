@@ -37,7 +37,10 @@ class UserPreferencesService {
     prefs.remove("userId");
     prefs.remove("token");
     prefs.remove("isUserLogin");
-
+    prefs.remove("tcsAmountPercentage");
+    prefs.remove("tcsLimit");
+    prefs.remove("tcsAmount");
+    prefs.remove("isTCSApply");
   }
 
   static Future<String> getToken() async {

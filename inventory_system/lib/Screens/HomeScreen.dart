@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_system/Screens/CategoryScreen.dart';
 import 'package:inventory_system/Screens/InvoiceListScreen.dart';
+import 'package:inventory_system/Screens/LoginScreen.dart';
 import 'package:inventory_system/Screens/SideMenuDrawer.dart';
 import 'package:inventory_system/Screens/SubCategoryScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
@@ -65,7 +66,20 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
 
-    CategoryModel.getCategoryList(completion: (res) {
+    CategoryModel.getCategoryList(completion: (res,isAuth) {
+
+      if(!isAuth){
+        CustomPopup(context, title: 'Sorry', message: res.msg ?? "Error", primaryBtnTxt: 'Re Try',primaryAction: (){
+          UserPreferencesService().removeUser();
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LoginScreen()),
+                  (route) => false);
+        });
+        return;
+      }
+
       switch (res.state) {
         case Status.LOADING:
           setState(() {
