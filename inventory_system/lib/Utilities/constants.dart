@@ -17,5 +17,6 @@ const String kGetDeliveryType = "GetDeliveryType";
 const String kAddOrderDetails = "addOrderDetails";
 const String kGetMobileNotification = "getMobileNotification";
 const String kGetBillDetails = "GetBillDetails";
+const String kUpdateFcmToken = "updateFcmToken";
 
 const String kImgUrl = "https://santkrupa.s3.ap-south-1.amazonaws.com/";

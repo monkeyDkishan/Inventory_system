@@ -18,6 +18,11 @@ class UserModel {
       return null;
     }
   }
+
+  static updateFCM() async{
+    await _userRepo.updateFcmToken();
+  }
+
   static Future getProfileDetails({Function(ApiResponse<ResGetProfileDetails>) completion}) async {
 
     try {

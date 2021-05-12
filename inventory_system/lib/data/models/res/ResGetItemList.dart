@@ -80,6 +80,7 @@ class ResGetItemList {
     this.quantity,
     this.notes,
     this.selectedUnitMaster,
+    this.isProductAvailbleinStock
   });
 
   int productid;
@@ -109,6 +110,7 @@ class ResGetItemList {
   int quantity;
   String notes;
   Unitmaster selectedUnitMaster;
+  bool isProductAvailbleinStock;
 
   factory ResGetItemList.fromJson(Map<String, dynamic> json) => ResGetItemList(
     productid: json["productid"],
@@ -138,6 +140,7 @@ class ResGetItemList {
     quantity: json["quantity"],
     notes: json["notes"],
     selectedUnitMaster: json["selectedUnitMaster"],
+    isProductAvailbleinStock: json["isProductAvailbleinStock"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -168,6 +171,7 @@ class ResGetItemList {
     "quantity": quantity,
     "notes": notes,
     "selectedUnitMaster": selectedUnitMaster,
+    "isProductAvailbleinStock":isProductAvailbleinStock,
   };
 }
 

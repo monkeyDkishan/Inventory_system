@@ -57,6 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
     UserModel.getProfileDetails(completion: (res) async {
     });
 
+    UserModel.updateFCM();
+
     InvoiceModel.getTotalOutStandings(completion: (res){
 
       if(res.state == Status.COMPLETED){

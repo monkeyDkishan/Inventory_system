@@ -184,7 +184,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               ],
             ),
           ),
-          Container(
+          if(widget.itemDetail.isProductAvailbleinStock ?? false)
+            Container(
             height: 50,
             width: double.infinity,
             color: ColorUtil.buttonColor,
@@ -217,7 +218,13 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                     fontSize: 20),
               )),
             ),
-          )
+          ),
+          if(!(widget.itemDetail.isProductAvailbleinStock ?? false))
+            Container(child: Center(
+              child: Text('Not Available',style: TextStyle(
+                  color: Colors.red
+              ),),
+            ))
         ],
       )),
     );

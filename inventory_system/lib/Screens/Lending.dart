@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_system/Screens/HomeScreen.dart';
 import 'package:inventory_system/Screens/LoginScreen.dart';
+import 'package:inventory_system/services/firebase_config.dart';
 import 'package:inventory_system/services/userPreferencesService.dart';
 
 class LendingScreen extends StatefulWidget {
@@ -36,7 +37,7 @@ class _LendingScreenState extends State<LendingScreen> {
       return Container(color: Colors.black);
     }else{
       if(isUserLogin){
-        return HomeScreen();
+        return MessageHandler(child: HomeScreen(),); //HomeScreen();
       }else{
         return LoginScreen();
       }

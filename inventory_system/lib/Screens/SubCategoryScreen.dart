@@ -176,7 +176,9 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                   Row(
                                     children: [
                                       Expanded(child: Container(),),
-                                      InkWell(
+                                      SizedBox(height: 10),
+                                      if(res.isProductAvailbleinStock ?? false)
+                                        InkWell(
                                         onTap: () async {
                                           //Add item in cart popup here
 
@@ -240,7 +242,11 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                           padding: EdgeInsets.all(10),
                                           child: Text(exist ? "Go To Cart" : "ADD",style: TextStyle(color: Colors.white),),
                                         ),
-                                      )
+                                      ),
+                                      if(!(res.isProductAvailbleinStock ?? false))
+                                        Container(child: Text('Not Available',style: TextStyle(
+                                          color: Colors.red
+                                        ),))
                                     ],
                                   ),
 
