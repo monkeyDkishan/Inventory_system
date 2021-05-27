@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:inventory_system/Screens/CategoryScreen.dart';
 import 'package:inventory_system/Screens/InvoiceListScreen.dart';
 import 'package:inventory_system/Screens/LoginScreen.dart';
+import 'package:inventory_system/Screens/OrderListScreen.dart';
 import 'package:inventory_system/Screens/SideMenuDrawer.dart';
 import 'package:inventory_system/Screens/SubCategoryScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
@@ -156,10 +157,15 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: GestureDetector(
               onTap: () {
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => InvoiceListScreen()));
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => InvoiceListScreen()));
+                        builder: (context) => OrderListScreen()));
+
               },
               child: Container(
                 padding: EdgeInsets.all(15),

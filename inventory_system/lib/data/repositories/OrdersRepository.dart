@@ -1,6 +1,8 @@
 import 'package:inventory_system/Utilities/constants.dart';
 import 'package:inventory_system/data/models/req/ReqGetBillDetails.dart';
+import 'package:inventory_system/data/models/res/BaseRes.dart';
 import 'package:inventory_system/data/models/res/ResGetBillDetails.dart';
+import 'package:inventory_system/data/models/res/ResGetOrderDetails.dart';
 import 'package:inventory_system/services/userPreferencesService.dart';
 import 'package:inventory_system/services/webService.dart';
 
@@ -19,4 +21,19 @@ class OrderRepository{
     return ResGetBillDetails.fromJson(res);
   }
 
+  Future<ResGetOrderDetails> getAllOrders() async{
+
+    final user = await UserPreferencesService().getUser();
+
+    var res = await _webService.getApi('GetOrderDetails'+'?PartyID=${user.id}');
+
+    return ResGetOrderDetails.fromJson(res);
+  }
+
+  Future<BaseRes> deleteOrder({int id}) async{
+
+    var res = await _webService.getApi('DeleteOrderDetails'+'?Orderid=$id');
+
+    return BaseRes.fromJson(res);
+  }
 }

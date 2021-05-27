@@ -83,6 +83,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     });
 
     _myDialog = new FullScreenDialog(
+      productID: widget.itemDetail.productid ?? 0,
       units: units,
       completion: (unit, quantity, notes, index) async {
 
@@ -224,7 +225,14 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               child: Text('Not Available',style: TextStyle(
                   color: Colors.red
               ),),
-            ))
+            )),
+
+          Container(
+            child: Center(
+              child: Text('Delete'),
+            ),
+          )
+
         ],
       )),
     );

@@ -9,11 +9,19 @@ class ResGetInvoice {
   String message;
   ResGetInvoiceData data;
 
-  factory ResGetInvoice.fromJson(Map<String, dynamic> json) => ResGetInvoice(
+  factory ResGetInvoice.fromJson(Map<String, dynamic> json) {
+    if(json["data"] == null){
+      return ResGetInvoice(
         status: json["Status"],
-        message: json["Message"],
-        data: ResGetInvoiceData.fromJson(json["data"]),
+        message: json["Message"]
       );
+    }
+    return ResGetInvoice(
+      status: json["Status"],
+      message: json["Message"],
+      data: ResGetInvoiceData.fromJson(json["data"]),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "Status": status,

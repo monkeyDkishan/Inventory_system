@@ -10,11 +10,20 @@ class ResGetItem {
   String message;
   ResGetItemData data;
 
-  factory ResGetItem.fromJson(Map<String, dynamic> json) => ResGetItem(
-    status: json["Status"],
-    message: json["Message"],
-    data: ResGetItemData.fromJson(json["data"]),
-  );
+  factory ResGetItem.fromJson(Map<String, dynamic> json) {
+
+    if (json["data"] == null){
+      return ResGetItem(
+        status: json["Status"],
+        message: json["Message"],
+      );
+    }
+    return ResGetItem(
+      status: json["Status"],
+      message: json["Message"],
+      data: ResGetItemData.fromJson(json["data"]),
+    );
+    }
 
   Map<String, dynamic> toJson() => {
     "Status": status,

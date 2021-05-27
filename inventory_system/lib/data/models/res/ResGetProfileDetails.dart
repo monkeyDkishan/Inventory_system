@@ -38,12 +38,23 @@ class ResGetProfileDetailsData {
   int currentPage;
   List<ResGetProfileDetailsList> list;
 
-  factory ResGetProfileDetailsData.fromJson(Map<String, dynamic> json) => ResGetProfileDetailsData(
-    totalRecords: json["TotalRecords"],
-    pageSize: json["PageSize"],
-    currentPage: json["CurrentPage"],
-    list: List<ResGetProfileDetailsList>.from(json["list"].map((x) => ResGetProfileDetailsList.fromJson(x))),
-  );
+  factory ResGetProfileDetailsData.fromJson(Map<String, dynamic> json) {
+
+    if (json["list"] == null){
+      return ResGetProfileDetailsData(
+        totalRecords: json["TotalRecords"],
+        pageSize: json["PageSize"],
+        currentPage: json["CurrentPage"],
+      );
+    }
+
+    return ResGetProfileDetailsData(
+      totalRecords: json["TotalRecords"],
+      pageSize: json["PageSize"],
+      currentPage: json["CurrentPage"],
+      list: List<ResGetProfileDetailsList>.from(json["list"].map((x) => ResGetProfileDetailsList.fromJson(x))),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     "TotalRecords": totalRecords,

@@ -36,12 +36,21 @@ class ResCMSData {
   int currentPage;
   List<ResCMSList> list;
 
-  factory ResCMSData.fromJson(Map<String, dynamic> json) => ResCMSData(
-    totalRecords: json["TotalRecords"],
-    pageSize: json["PageSize"],
-    currentPage: json["CurrentPage"],
-    list: List<ResCMSList>.from(json["list"].map((x) => ResCMSList.fromJson(x))),
-  );
+  factory ResCMSData.fromJson(Map<String, dynamic> json) {
+    if(json["list"] == null){
+      return ResCMSData(
+        totalRecords: json["TotalRecords"],
+        pageSize: json["PageSize"],
+        currentPage: json["CurrentPage"],
+      );
+    }
+    return ResCMSData(
+      totalRecords: json["TotalRecords"],
+      pageSize: json["PageSize"],
+      currentPage: json["CurrentPage"],
+      list: List<ResCMSList>.from(json["list"].map((x) => ResCMSList.fromJson(x))),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     "TotalRecords": totalRecords,

@@ -67,7 +67,7 @@ class InvoiceModel {
       completion(resGetInvoice);
     } catch (e) {
       print(e);
-      resGetInvoice.msg = e;
+      resGetInvoice.msg = e.toString();
       resGetInvoice.state = Status.ERROR;
       completion(resGetInvoice);
     }
@@ -94,7 +94,7 @@ class InvoiceModel {
       completion(totalOutStandingRes);
     } catch (e) {
       print(e);
-      totalOutStandingRes.msg = e;
+      totalOutStandingRes.msg = e.toString();
       totalOutStandingRes.state = Status.ERROR;
       completion(totalOutStandingRes);
     }

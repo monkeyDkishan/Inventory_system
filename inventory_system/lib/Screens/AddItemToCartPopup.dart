@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/component/CustomPopup.dart';
+import 'package:inventory_system/data/models/CartModel.dart';
 
 class FullScreenDialog extends StatefulWidget {
 
-  FullScreenDialog({this.units, this.completion, this.quantity, this.notes, this.dropdownValue, this.index});
+  FullScreenDialog({@required this.productID ,this.units, this.completion, this.quantity, this.notes, this.dropdownValue, this.index});
 
   final List<UnitItem> units;
 
   Function(UnitItem,int,String,int) completion;
 
   int quantity = 0;
+
+  final int productID;
 
   String notes = "";
 
@@ -158,7 +161,7 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                               color: ColorUtil.buttonColor,
                             ),
                             child: TextButton(
-                                onPressed: () {
+                                onPressed: () async {
 
                                   if(dropdownValue == null){
                                     CustomPopup(context, title: 'Validate', message: 'Please select unit', primaryBtnTxt: 'OK');
@@ -182,8 +185,14 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                                     return;
                                   }
 
-                                  widget.completion(dropdownValue,quantity,notes,widget.index);
-                                  Navigator.pop(context);
+                                  final isAvailable = await CartModel().isInStock(productID: widget.productID,Quntity: quantity,Unitid: dropdownValue.unitId ?? 0);
+
+                                  if (isAvailable){
+                                    widget.completion(dropdownValue,quantity,notes,widget.index);
+                                    Navigator.pop(context);
+                                  }else{
+                                    CustomPopup(context, title: 'Not Available', message: 'This much item is not in stock', primaryBtnTxt: 'OK');
+                                  }
                                 },
                                 child: Text(
                                   "Add",

@@ -10,11 +10,20 @@ class ResGetDeliveryType {
   String message;
   ResGetDeliveryTypeData data;
 
-  factory ResGetDeliveryType.fromJson(Map<String, dynamic> json) => ResGetDeliveryType(
-    status: json["Status"],
-    message: json["Message"],
-    data: ResGetDeliveryTypeData.fromJson(json["data"]),
-  );
+  factory ResGetDeliveryType.fromJson(Map<String, dynamic> json) {
+
+    if(json["data"] == null){
+      return ResGetDeliveryType(
+        status: json["Status"],
+        message: json["Message"],
+      );
+    }
+    return ResGetDeliveryType(
+      status: json["Status"],
+      message: json["Message"],
+      data: ResGetDeliveryTypeData.fromJson(json["data"]),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     "Status": status,

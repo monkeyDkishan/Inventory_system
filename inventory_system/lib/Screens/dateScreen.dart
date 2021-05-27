@@ -99,8 +99,8 @@ class _DateScreenState extends State<DateScreen> {
           InkWell(
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context) => StatementListScreen(
-                fromDate: formateDateForNext(startDate),
-                toDate: formateDateForNext(endDate),
+                fromDate: formateDate(startDate),
+                toDate: formateDate(endDate),
               ),));
             },
             child: Container(

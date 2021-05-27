@@ -82,4 +82,31 @@ class CartModel {
     }
   }
 
+  Future<bool> isInStock({int productID,int Quntity,int Unitid}) async{
+    try{
+       final res = await _cartRepo.isInStock(productID, Quntity, Unitid);
+
+       if(res.status == 0){
+         return false;
+       }
+
+       if(res.data == null){
+         return false;
+       }else{
+
+         if(res.data.availbleStock == null){
+           return false;
+         }else{
+           // if (Quntity >= res.data.availbleStock){
+           //   return false;
+           // }
+           return true;
+         }
+       }
+    }catch(e){
+      return false;
+    }
+
+  }
+
 }

@@ -198,7 +198,9 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                           });
 
                                           Navigator.push(context, new MaterialPageRoute(
-                                            builder: (BuildContext context) => FullScreenDialog(index: res.selectedUnitIndex ?? 0,units: units,
+                                            builder: (BuildContext context) => FullScreenDialog(
+                                              productID: res.productid,
+                                              index: res.selectedUnitIndex ?? 0,units: units,
                                               completion: (unit, quantity, notes,index) async {
 
                                                 final cartItem = await CartService.getCarts();

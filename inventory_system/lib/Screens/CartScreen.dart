@@ -310,6 +310,7 @@ class _CartScreenState extends State<CartScreen> {
                                             getCart();
                                             Navigator.push(context, new MaterialPageRoute(
                                               builder: (BuildContext context) => FullScreenDialog(
+                                                productID: res.productid ?? 0,
                                                 index: res.selectedIndex ?? 0,
                                                 dropdownValue: UnitItem(unitId: res.unitId ?? 0,unitPrice: res.unitPrice,unitName: res.unitName ?? ""),
                                                 quantity: res.quantity,

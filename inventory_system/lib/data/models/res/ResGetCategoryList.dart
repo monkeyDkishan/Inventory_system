@@ -46,12 +46,23 @@ class ResGetCategoryData {
   int currentPage;
   List<ResGetCategoryList> list;
 
-  factory ResGetCategoryData.fromJson(Map<String, dynamic> json) => ResGetCategoryData(
-    totalRecords: json["TotalRecords"],
-    pageSize: json["PageSize"],
-    currentPage: json["CurrentPage"],
-    list: List<ResGetCategoryList>.from(json["list"].map((x) => ResGetCategoryList.fromJson(x))),
-  );
+  factory ResGetCategoryData.fromJson(Map<String, dynamic> json) {
+
+    if(json["list"] == null){
+      return ResGetCategoryData(
+        totalRecords: json["TotalRecords"],
+        pageSize: json["PageSize"],
+        currentPage: json["CurrentPage"],
+      );
+    }
+
+    return ResGetCategoryData(
+      totalRecords: json["TotalRecords"],
+      pageSize: json["PageSize"],
+      currentPage: json["CurrentPage"],
+      list: List<ResGetCategoryList>.from(json["list"].map((x) => ResGetCategoryList.fromJson(x))),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     "TotalRecords": totalRecords,
