@@ -11,7 +11,7 @@ class OrderModel {
 
   static var apiRes = ApiResponse<ResGetBillDetails>();
 
-  static var orders = ApiResponse<ResGetOrderDetails>();
+  static var orders = ApiResponse<ResGetBillDetails>();
 
   static var selectedOrder = ResGetOrderDetails();
 
@@ -43,7 +43,7 @@ class OrderModel {
     }
   }
 
-  static Future getAllOrder({Function(ApiResponse<ResGetOrderDetails>) completion}) async {
+  static Future getAllOrder({Function(ApiResponse<ResGetBillDetails>) completion}) async {
 
     try {
       orders.state = Status.LOADING;

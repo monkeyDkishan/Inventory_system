@@ -98,7 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: ColorUtil.buttonColor,
                           child: TextButton(
                             onPressed: (){
-
                               if(isLoading){return;}
 
                               AuthModel.validateMobile(mobile: _controller.text,completion: (res){

@@ -11,7 +11,11 @@ class CategoryRepository{
   Future<ResGetCategory> getCategoryListApi() async{
     var res = await _webService.getApi(kGetCategoryList);
 
-    return ResGetCategory.fromJson(res);
+    try{
+      return ResGetCategory.fromJson(res);
+    }catch(e){
+      throw "Decoding Error";
+    }
   }
 
   Future<ResGetSubCategory> getSubCategoryListApi(int categoryId) async{
@@ -19,7 +23,11 @@ class CategoryRepository{
       "Categoryid" : categoryId.toString()
     });
 
-    return ResGetSubCategory.fromJson(res);
+    try{
+      return ResGetSubCategory.fromJson(res);
+    }catch(e){
+      throw "Decoding Error";
+    }
   }
 
   Future<ResGetItem> getItemList(int categoryId,int subCategoryId,int productId) async{
@@ -29,7 +37,11 @@ class CategoryRepository{
       // "ProductID" : productId.toString(),
     });
 
-    return ResGetItem.fromJson(res);
+    try{
+      return ResGetItem.fromJson(res);
+    }catch(e){
+      throw "Decoding Error";
+    }
   }
 
 }

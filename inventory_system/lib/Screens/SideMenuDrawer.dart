@@ -96,95 +96,108 @@ getDrawer(context) {
   }
 
   return Drawer(
-    child: Column(
-      children: [
-        Expanded(
-          child: Container(
-            color: ColorUtil.primoryColor,
-            child: ListView.builder(
-                itemCount: screens.length + 1,
-                itemBuilder: (BuildContext context, int index) {
-                  if (index == 0) {
-                    return ListTile(
-                      title: Container(
-                        child: Column(
-                          children: [
+    child: sideMenu(_showMyDialog),
+  );
+}
 
-                            SizedBox(height: 20),
-                            Text(
-                              UserModel.userRes.partyname ?? "",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              UserModel.userRes.phone ?? "",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                            SizedBox(height: 10),
-                          ],
-                        ),
-                      ),
-                      onTap: () {
-                        // Navigator.pop(context);
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(builder: (context) => ProfileScreen()));
-                      },
-                    );
-                  }
+Widget sideMenu(Future<void> _showMyDialog()) {
 
-                  return Container(
-                    // color: Colors.black,
-                    child: Container(
-                      // color: Colors.white,
-                      // margin: EdgeInsets.only(top: 1,bottom: screens.length == index ? 1 : 0),
-                      // decoration: BoxDecoration(
-                      //     border: Border(
-                      //       top: BorderSide(width: 0.5,color: Colors.white),
-                      //       bottom: BorderSide(width: 0.5,color: index == screens.length ? Colors.white : Colors.transparent),
-                      //     )
-                      // ),
-                      child: ListTile(
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              screens[index - 1],
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                            Icon(Icons.arrow_forward_ios,size: 15,color: Colors.white,)
-                          ],
-                        ),
-                        onTap: () {
-                          if ((index - 1) == screens_clasees.length) {
-                            Navigator.pop(context);
-                            _showMyDialog();
-                            return;
-                          }
+  if(UserModel == null){
+    return Container();
+  }
 
-                          Navigator.pop(context);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      screens_clasees[index - 1]));
-                        },
+  if(UserModel.userRes == null){
+    return Container();
+  }
+
+  return Column(
+    children: [
+      Expanded(
+        child: Container(
+          color: ColorUtil.primoryColor,
+          child: ListView.builder(
+              itemCount: screens.length + 1,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return ListTile(
+                    title: Container(
+                      child: Column(
+                        children: [
+
+                          SizedBox(height: 20),
+                          Text(
+                            UserModel.userRes.partyname ?? "",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            UserModel.userRes.phone ?? "",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                          ),
+                          SizedBox(height: 10),
+                        ],
                       ),
                     ),
+                    onTap: () {
+                      // Navigator.pop(context);
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(builder: (context) => ProfileScreen()));
+                    },
                   );
-                }),
-          ),
+                }
+
+                return Container(
+                  // color: Colors.black,
+                  child: Container(
+                    // color: Colors.white,
+                    // margin: EdgeInsets.only(top: 1,bottom: screens.length == index ? 1 : 0),
+                    // decoration: BoxDecoration(
+                    //     border: Border(
+                    //       top: BorderSide(width: 0.5,color: Colors.white),
+                    //       bottom: BorderSide(width: 0.5,color: index == screens.length ? Colors.white : Colors.transparent),
+                    //     )
+                    // ),
+                    child: ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            screens[index - 1],
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                          ),
+                          Icon(Icons.arrow_forward_ios,size: 15,color: Colors.white,)
+                        ],
+                      ),
+                      onTap: () {
+                        if ((index - 1) == screens_clasees.length) {
+                          Navigator.pop(context);
+                          _showMyDialog();
+                          return;
+                        }
+
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    screens_clasees[index - 1]));
+                      },
+                    ),
+                  ),
+                );
+              }),
         ),
-      ],
-    ),
+      ),
+    ],
   );
 }

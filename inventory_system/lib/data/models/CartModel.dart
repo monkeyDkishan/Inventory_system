@@ -40,7 +40,7 @@ class CartModel {
     }
   }
 
-  static Future addOrder({double deliveryCharge,double finalTotal,double subTotal,int selectedDeliveryType,List<ReqCartItemAddOrderDetails> cartItems,Function(ApiResponse<ResAddOrderDetails>) completion}) async {
+  static Future addOrder({double tcsCharge,double deliveryCharge,double finalTotal,double subTotal,int selectedDeliveryType,List<ReqCartItemAddOrderDetails> cartItems,Function(ApiResponse<ResAddOrderDetails>) completion}) async {
     try {
 
       addOrderRes.state = Status.LOADING;
@@ -51,7 +51,7 @@ class CartModel {
 
       final req = ReqAddOrderDetails(
           partyid: user.id,
-          tcsamount: user.tcsAmount,
+          tcsamount: tcsCharge,
           tcsamountpercentage: user.tcsAmountPercentage,
           deliveryCharge: deliveryCharge,
           finalTotal: finalTotal,

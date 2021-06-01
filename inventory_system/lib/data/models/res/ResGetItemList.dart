@@ -45,12 +45,17 @@ class ResGetItemData {
   int currentPage;
   List<ResGetItemList> list;
 
-  factory ResGetItemData.fromJson(Map<String, dynamic> json) => ResGetItemData(
-    totalRecords: json["TotalRecords"],
-    pageSize: json["PageSize"],
-    currentPage: json["CurrentPage"],
-    list: List<ResGetItemList>.from(json["list"].map((x) => ResGetItemList.fromJson(x))),
-  );
+  factory ResGetItemData.fromJson(Map<String, dynamic> json) {
+    if(json["list"] == null){
+      return ResGetItemData();
+    }
+    return ResGetItemData(
+      totalRecords: json["TotalRecords"],
+      pageSize: json["PageSize"],
+      currentPage: json["CurrentPage"],
+      list: List<ResGetItemList>.from(json["list"].map((x) => ResGetItemList.fromJson(x))),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     "TotalRecords": totalRecords,

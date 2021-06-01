@@ -11,13 +11,21 @@ class InvoiceRepository{
   Future<ResGetTotalOutStanding> getTotalOutStanding() async{
     var res = await _webService.getApi(kGetTotalOutStanding);
 
-    return ResGetTotalOutStanding.fromJson(res);
+    try{
+      return ResGetTotalOutStanding.fromJson(res);
+    }catch(e){
+      throw "Decoding Error";
+    }
   }
 
   Future<ResGetInvoice> getInvoiceList() async{
     var res = await _webService.getApi(kGetInvoiceList);
 
-    return ResGetInvoice.fromJson(res);
+    try{
+      return ResGetInvoice.fromJson(res);
+    }catch(e){
+      throw "Decoding Error";
+    }
   }
 
   Future<ResGetInvoice> getInvoiceDetail(int orderId) async{
@@ -25,7 +33,11 @@ class InvoiceRepository{
       "Orderid" : orderId.toString()
     });
 
-    return ResGetInvoice.fromJson(res);
+    try{
+      return ResGetInvoice.fromJson(res);
+    }catch(e){
+      throw "Decoding Error";
+    }
   }
 
 }

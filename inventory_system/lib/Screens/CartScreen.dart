@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_system/Screens/AddItemToCartPopup.dart';
 import 'package:inventory_system/Screens/InvoiceListScreen.dart';
+import 'package:inventory_system/Screens/OrderListScreen.dart';
 import 'package:inventory_system/Screens/StatementListScreen.dart';
 import 'package:inventory_system/Screens/StatementScreen.dart';
 import 'package:inventory_system/Screens/dateScreen.dart';
@@ -131,6 +132,7 @@ class _CartScreenState extends State<CartScreen> {
     });
 
     CartModel.addOrder(
+      tcsCharge: tcsCharge ?? 0.0,
       cartItems: cartItems,
         subTotal: subTotal,
         finalTotal: finalTotal,
@@ -151,7 +153,7 @@ class _CartScreenState extends State<CartScreen> {
 
           await CartService.emptyCart();
 
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => InvoiceListScreen(),), (route)
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => OrderListScreen(),), (route)
           {
             return route.isFirst;
           });

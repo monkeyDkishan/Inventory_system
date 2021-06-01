@@ -29,7 +29,10 @@ class _StatementListScreenState extends State<StatementListScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getData();
+  }
 
+  getData(){
     OrderModel.getOrder(toDate: widget.toDate,fromDate: widget.fromDate,completion: (res){
       switch (res.state) {
         case Status.LOADING:
@@ -46,6 +49,7 @@ class _StatementListScreenState extends State<StatementListScreen> {
         case Status.ERROR:
           setState(() {
             isLoading = false;
+            billData = null;
           });
           CustomPopup(context,
               title: 'Sorry', message: res.msg ?? "Error", primaryBtnTxt: 'OK');
@@ -74,7 +78,9 @@ class _StatementListScreenState extends State<StatementListScreen> {
       return LoadingSmall(color: ColorUtil.primoryColor);
     }
 
-    if(billData == null || billData.list.length == 0){
+    if(billData == null){
+      return NoDataFoundContainer();
+    }else if(billData.list.length == 0){
       return NoDataFoundContainer();
     }
 
@@ -117,7 +123,11 @@ class _StatementListScreenState extends State<StatementListScreen> {
                   ),
                 ),
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => StatementScreen(index: index,statementName: "Statement $index",res: data,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => StatementScreen(index: index,statementName: "Statement $index",res: data,))).then((value) {
+                    if(value != null && value == true){
+                      getData();
+                    }
+                  });
                 },
               ),
             );

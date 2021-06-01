@@ -10,12 +10,10 @@ class NoDataFoundContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text(errText ?? "No Data Found",style: TextStyle(
-          color: txtColor ?? Colors.black.withOpacity(0.3)
-        ),),
-      ),
+    return Center(
+      child: Text(errText ?? "No Data Found",style: TextStyle(
+        color: txtColor ?? Colors.black.withOpacity(0.3)
+      ),),
     );
   }
 }

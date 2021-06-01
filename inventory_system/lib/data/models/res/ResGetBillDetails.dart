@@ -46,12 +46,19 @@ class GetBillDetailsData {
   int currentPage;
   List<GetBillDetailsList> list;
 
-  factory GetBillDetailsData.fromJson(Map<String, dynamic> json) => GetBillDetailsData(
-    totalRecords: json["TotalRecords"],
-    pageSize: json["PageSize"],
-    currentPage: json["CurrentPage"],
-    list: List<GetBillDetailsList>.from(json["list"].map((x) => GetBillDetailsList.fromJson(x))),
-  );
+  factory GetBillDetailsData.fromJson(Map<String, dynamic> json) {
+
+    if (json["list"] == null){
+      return GetBillDetailsData();
+    }
+
+    return GetBillDetailsData(
+      totalRecords: json["TotalRecords"],
+      pageSize: json["PageSize"],
+      currentPage: json["CurrentPage"],
+      list: List<GetBillDetailsList>.from(json["list"].map((x) => GetBillDetailsList.fromJson(x))),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     "TotalRecords": totalRecords,

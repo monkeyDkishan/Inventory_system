@@ -15,7 +15,11 @@ class UserRepository{
   Future<ResGetProfileDetails> getProfileDetailsApi() async{
     var res = await _webService.getApi(kGetProfileDetails);
 
-    return ResGetProfileDetails.fromJson(res);
+    try{
+      return ResGetProfileDetails.fromJson(res);
+    }catch(e){
+      throw "Decoding Error";
+    }
   }
 
   Future updateFcmToken() async{

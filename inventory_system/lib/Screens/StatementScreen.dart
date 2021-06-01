@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_system/Utilities/ColorUtil.dart';
+import 'package:inventory_system/component/CustomPopup.dart';
+import 'package:inventory_system/component/LoadingSmall.dart';
 import 'package:inventory_system/component/NoDataFoundContainer.dart';
+import 'package:inventory_system/data/models/OrderModel.dart';
 import 'package:inventory_system/data/models/res/ResGetBillDetails.dart';
+import 'package:inventory_system/services/webService.dart';
 
 class StatementScreen extends StatefulWidget {
 
@@ -17,17 +22,54 @@ class StatementScreen extends StatefulWidget {
 
 class _StatementScreenState extends State<StatementScreen> {
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('My Order'),
+        actions: [
+          IconButton(onPressed: (){
+            CustomPopup(context, title: 'Are you sure', message: 'You want to delete this order?', primaryBtnTxt: 'YES',primaryAction: (){
+              deleteOrder(widget.res.orderid ?? 0);
+            },secondaryBtnTxt: 'NO');
+          }, icon: Icon(Icons.delete))
+        ],
       ),
       body: buildContainer()
     );
   }
 
+  deleteOrder(int id) async {
+    await OrderModel.deleteOrder(id: id,completion: (res){
+      switch(res.state){
+        case Status.LOADING:
+          setState(() {
+            isLoading = true;
+          });
+          break;
+        case Status.COMPLETED:
+          setState(() {
+            isLoading = false;
+            Navigator.pop(context,true);
+          });
+          break;
+        case Status.ERROR:
+          setState(() {
+            isLoading = false;
+          });
+          CustomPopup(context, title: 'Sorry', message: res.msg, primaryBtnTxt: 'ok');
+          break;
+      }
+    });
+  }
+
   Widget buildContainer() {
+
+    if (isLoading) {
+      return LoadingSmall(color: ColorUtil.primoryColor,);
+    }
 
     if(widget.res == null){
       return NoDataFoundContainer();
@@ -42,8 +84,11 @@ class _StatementScreenState extends State<StatementScreen> {
             child: buildListView(),
           )),
           Container(
-            color: Colors.white,
             width: double.infinity,
+            decoration: BoxDecoration(
+                color: ColorUtil.primoryColor,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+            ),
             padding: EdgeInsets.all(15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +97,7 @@ class _StatementScreenState extends State<StatementScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Order Is: '),
+                    Text('Order Is: ',style: TextStyle(color: Colors.white),),
                     Text('${data.isOrderPlaced ? 'Placed' : 'Pending'}',style: TextStyle(
                         fontSize: 16,
                         color: data.isOrderPlaced ? Colors.green : Colors.redAccent
@@ -62,23 +107,51 @@ class _StatementScreenState extends State<StatementScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Payment Is: '),
+                    Text('Payment Is: ',style: TextStyle(color: Colors.white),),
                     Text('${data.isamountpaid ? 'Paid' : 'Pending'}',style: TextStyle(
                         fontSize: 16,
                       color: data.isamountpaid ? Colors.green : Colors.redAccent
                     ),),
                   ],
                 ),
+
                 SizedBox(height: 5),
-                Container(height: 1,color: Colors.black.withOpacity(0.4),),
+                Container(height: 1,color: Colors.white.withOpacity(0.4),),
+                SizedBox(height: 5),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Delivery Charge: ',style: TextStyle(color: Colors.white),),
+                    Text('${data.deliveryCharges}',style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white
+                    ),),
+                  ],
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('TCS Charge: ',style: TextStyle(color: Colors.white),),
+                    Text('${data.tcsAmount}',style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white
+                    ),),
+                  ],
+                ),
+
+                SizedBox(height: 5),
+                Container(height: 1,color: Colors.white.withOpacity(0.4),),
                 SizedBox(height: 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Total: '),
+                    Text('Total: ',style: TextStyle(color: Colors.white),),
                     Text('Rs. ${data.totalpayable}',style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white
                     ),),
                   ],
                 )

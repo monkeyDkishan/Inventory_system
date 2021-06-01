@@ -18,16 +18,24 @@ class OrderRepository{
 
     var res = await _webService.getApi('$kGetBillDetails?PartyID=${req.partyID}&FromDate=${req.fromDate}&ToDate=${req.toDate}');
 
-    return ResGetBillDetails.fromJson(res);
+    try{
+      return ResGetBillDetails.fromJson(res);
+    }catch(e){
+      throw "Decoding Error";
+    }
   }
 
-  Future<ResGetOrderDetails> getAllOrders() async{
+  Future<ResGetBillDetails> getAllOrders() async{
 
     final user = await UserPreferencesService().getUser();
 
     var res = await _webService.getApi('GetOrderDetails'+'?PartyID=${user.id}');
 
-    return ResGetOrderDetails.fromJson(res);
+    try{
+      return ResGetBillDetails.fromJson(res);
+    }catch(e){
+      throw "Decoding Error";
+    }
   }
 
   Future<BaseRes> deleteOrder({int id}) async{

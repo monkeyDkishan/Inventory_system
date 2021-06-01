@@ -9,6 +9,10 @@ class ServiceRepository{
   Future<ResCMS> getCMSPage(String urlPath) async{
     var res = await _webService.getApi(urlPath);
 
-    return ResCMS.fromJson(res);
+    try{
+      return ResCMS.fromJson(res);
+    }catch(e){
+      throw "Decoding Error";
+    }
   }
 }

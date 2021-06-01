@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_system/Screens/StatementScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/component/CustomPopup.dart';
 import 'package:inventory_system/component/LoadingSmall.dart';
 import 'package:inventory_system/component/NoDataFoundContainer.dart';
 import 'package:inventory_system/data/models/OrderModel.dart';
+import 'package:inventory_system/data/models/res/ResGetBillDetails.dart';
 import 'package:inventory_system/data/models/res/ResGetOrderDetails.dart';
 import 'package:inventory_system/services/webService.dart';
 
@@ -23,7 +25,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
   
   bool isLoading = true;
 
-  var orders = ResGetOrderDetails();
+  var orders = ResGetBillDetails();
 
   getData() async {
     await OrderModel.getAllOrder(completion: (res){
@@ -42,6 +44,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
         case Status.ERROR:
           setState(() {
             isLoading = false;
+            orders = ResGetBillDetails();
           });
           CustomPopup(context, title: 'Sorry', message: res.msg, primaryBtnTxt: 'ok');
           break;
@@ -97,7 +100,11 @@ class _OrderListScreenState extends State<OrderListScreen> {
         final data = orders.data.list[index];
         return InkWell(
           onTap: (){
-            
+            Navigator.push(context, MaterialPageRoute(builder: (context) => StatementScreen(index: index,statementName: "Statement $index",res: data,))).then((value) {
+              if(value != null && value == true){
+                getData();
+              }
+            });
           },
           child: Card(
             child: Padding(
@@ -124,7 +131,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
                       Text('Total Items: ${data.orderitems.length}'),
                     ],
                   ),
-                  Text('Bill no. ${data.billreferencenumber}'),
+                  Text('Order ID. ${data.orderid}'),
                   Text('Due Date: ${data.duedate.day}/${data.duedate.month}/${data.duedate.year}'),
                 ],
               ),

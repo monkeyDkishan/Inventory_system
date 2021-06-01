@@ -16,7 +16,11 @@ class NotificationRepository{
   Future<ResGetMobileNotification> getNotifications() async{
     var res = await _webService.getApi(kGetMobileNotification);
 
-    return ResGetMobileNotification.fromJson(res);
+    try{
+      return ResGetMobileNotification.fromJson(res);
+    }catch(e){
+      throw "Decoding Error";
+    }
   }
 
 }

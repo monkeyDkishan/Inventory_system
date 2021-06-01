@@ -50,11 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int totalOutStandings;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    updateCount();
+  getInitialData(){
     UserModel.getProfileDetails(completion: (res) async {
     });
 
@@ -108,6 +104,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    updateCount();
+    getInitialData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       //Turn this on to stop the android and ios back gesture
@@ -146,7 +150,30 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     if (resList == null || resList.length <= 0) {
-      return NoDataFoundContainer();
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            NoDataFoundContainer(),
+            SizedBox(height: 15),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: ColorUtil.primoryColor,width: 1),
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: InkWell(onTap: (){
+                getInitialData();
+              }, child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+                child: Text('Retry',style: TextStyle(
+                  color: ColorUtil.primoryColor
+                )),
+              )),
+            )
+          ],
+        ),
+      );
     }
 
     return Container(
