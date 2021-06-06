@@ -245,8 +245,9 @@ class GetBillDetailsOrderItem {
     this.subcategoryid,
     this.subCategoryName,
     this.isstandalone,
-    // this.unitmaster,
-    // this.noofunit,
+    this.unitmaster,
+    this.noofunit,
+    this.unitid,
     this.unitprice,
     this.discount,
     this.itempayable,
@@ -280,7 +281,8 @@ class GetBillDetailsOrderItem {
   int subcategoryid;
   String subCategoryName;
   bool isstandalone;
-  // int noofunit;
+  int unitid;
+  double noofunit;
   double unitprice;
   double discount;
   double itempayable;
@@ -301,6 +303,7 @@ class GetBillDetailsOrderItem {
   // int unitpricewithoutgst;
   double discountpercentage;
   String note;
+  List<GetBillDetailsUnitmaster> unitmaster;
 
   factory GetBillDetailsOrderItem.fromJson(Map<String, dynamic> json) => GetBillDetailsOrderItem(
     orderitemid: json["orderitemid"],
@@ -314,8 +317,9 @@ class GetBillDetailsOrderItem {
     subcategoryid: json["Subcategoryid"],
     subCategoryName: json["SubCategoryName"],
     isstandalone: json["isstandalone"],
-    // unitmaster: List<GetBillDetailsUnitmaster>.from(json["unitmaster"].map((x) => GetBillDetailsUnitmaster.fromJson(x))),
-    // noofunit: json["noofunit"],
+    unitmaster: List<GetBillDetailsUnitmaster>.from(json["unitmaster"].map((x) => GetBillDetailsUnitmaster.fromJson(x))),
+    noofunit: json["noofunit"],
+    unitid: json["unitid"],
     unitprice: json["unitprice"],
     discount: json["discount"],
     itempayable: json["itempayable"],
@@ -350,8 +354,9 @@ class GetBillDetailsOrderItem {
     "Subcategoryid": subcategoryid,
     "SubCategoryName": subCategoryName,
     "isstandalone": isstandalone,
-    // "unitmaster": List<dynamic>.from(unitmaster.map((x) => x.toJson())),
-    // "noofunit": noofunit,
+    "unitmaster": List<dynamic>.from(unitmaster.map((x) => x.toJson())),
+    "noofunit": noofunit,
+    "unitid": unitid,
     "unitprice": unitprice,
     "discount": discount,
     "itempayable": itempayable,

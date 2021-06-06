@@ -1,5 +1,6 @@
 import 'package:inventory_system/Utilities/constants.dart';
 import 'package:inventory_system/data/models/req/ReqGetBillDetails.dart';
+import 'package:inventory_system/data/models/req/ReqUpdateOrderDetails.dart';
 import 'package:inventory_system/data/models/res/BaseRes.dart';
 import 'package:inventory_system/data/models/res/ResGetBillDetails.dart';
 import 'package:inventory_system/data/models/res/ResGetOrderDetails.dart';
@@ -44,4 +45,14 @@ class OrderRepository{
 
     return BaseRes.fromJson(res);
   }
+
+  Future<BaseRes> updateOrderDetails({ReqUpdateOrderDetails req}) async{
+
+    print('COOL!');
+
+    var res = await _webService.postApi('updateOrderDetails', req.toJson());
+
+    return BaseRes.fromJson(res);
+  }
+
 }

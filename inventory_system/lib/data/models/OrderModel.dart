@@ -1,4 +1,5 @@
 // getOrders
+import 'package:inventory_system/data/models/req/ReqUpdateOrderDetails.dart';
 import 'package:inventory_system/data/models/res/BaseRes.dart';
 import 'package:inventory_system/data/models/res/ResGetBillDetails.dart';
 import 'package:inventory_system/data/models/res/ResGetOrderDetails.dart';
@@ -15,10 +16,35 @@ class OrderModel {
 
   static var selectedOrder = ResGetOrderDetails();
 
+  static Future updateOrderDetails({ReqUpdateOrderDetails req, Function(ApiResponse<BaseRes>) completion}) async {
+    var myRes = ApiResponse<BaseRes>();
+    try {
+      myRes.state = Status.LOADING;
+
+      completion(myRes);
+
+      final res = await _userRepo.updateOrderDetails(req: req);
+
+      if (res.status == 0) {
+        throw res.message ?? "";
+      }
+
+      myRes.data = res;
+      myRes.state = Status.COMPLETED;
+      completion(myRes);
+    } catch (e) {
+      print("ERROR:-");
+      print(e);
+      myRes.msg = e.toString();
+      myRes.state = Status.ERROR;
+      completion(myRes);
+    }
+  }
+
   static Future deleteOrder({int id, Function(ApiResponse<BaseRes>) completion}) async {
     var myRes = ApiResponse<BaseRes>();
     try {
-      orders.state = Status.LOADING;
+      myRes.state = Status.LOADING;
 
       completion(myRes);
 

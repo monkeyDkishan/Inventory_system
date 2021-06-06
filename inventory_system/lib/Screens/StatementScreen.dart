@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:inventory_system/Screens/EditOrderScreen.dart';
+import 'package:inventory_system/Screens/PaymentScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
 import 'package:inventory_system/component/CustomPopup.dart';
 import 'package:inventory_system/component/LoadingSmall.dart';
@@ -30,11 +34,17 @@ class _StatementScreenState extends State<StatementScreen> {
       appBar: AppBar(
         title: Text('My Order'),
         actions: [
-          IconButton(onPressed: (){
-            CustomPopup(context, title: 'Are you sure', message: 'You want to delete this order?', primaryBtnTxt: 'YES',primaryAction: (){
-              deleteOrder(widget.res.orderid ?? 0);
-            },secondaryBtnTxt: 'NO');
-          }, icon: Icon(Icons.delete))
+
+          if(!widget.res.isamountpaid)
+            IconButton(onPressed: (){
+              CustomPopup(context, title: 'Are you sure', message: 'You want to delete this order?', primaryBtnTxt: 'YES',primaryAction: (){
+                deleteOrder(widget.res.orderid ?? 0);
+              },secondaryBtnTxt: 'NO');
+            }, icon: Icon(Icons.delete)),
+          if(!widget.res.isamountpaid)
+            IconButton(onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditOrderScreen(res: widget.res,),));
+            }, icon: Icon(Icons.edit))
         ],
       ),
       body: buildContainer()
@@ -154,7 +164,22 @@ class _StatementScreenState extends State<StatementScreen> {
                       color: Colors.white
                     ),),
                   ],
-                )
+                ),
+
+                if(!widget.res.isamountpaid && Platform.isAndroid)
+                  Container(
+                    alignment: Alignment.centerRight,
+                    height: 44,
+                    child: InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentScreen(),));
+                      },
+                      child: Text('PAY',style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold
+                      ),),
+                    ),
+                  )
               ],
             ),
           )

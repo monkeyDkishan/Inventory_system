@@ -227,11 +227,11 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               ),),
             )),
 
-          Container(
-            child: Center(
-              child: Text('Delete'),
-            ),
-          )
+          // Container(
+          //   child: Center(
+          //     child: Text('Delete'),
+          //   ),
+          // )
 
         ],
       )),
