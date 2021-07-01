@@ -180,10 +180,10 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                                     return;
                                   }
 
-                                  if(_notesController.text.isEmpty){
-                                    CustomPopup(context, title: 'Validate', message: 'Please enter notes', primaryBtnTxt: 'OK');
-                                    return;
-                                  }
+                                  // if(_notesController.text.isEmpty){
+                                  //   CustomPopup(context, title: 'Validate', message: 'Please enter notes', primaryBtnTxt: 'OK');
+                                  //   return;
+                                  // }
 
                                   final isAvailable = await CartModel().isInStock(productID: widget.productID,Quntity: quantity,Unitid: dropdownValue.unitId ?? 0);
 

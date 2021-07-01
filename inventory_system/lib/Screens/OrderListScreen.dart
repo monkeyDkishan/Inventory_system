@@ -100,7 +100,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
         final data = orders.data.list[index];
         return InkWell(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => StatementScreen(index: index,statementName: "Statement $index",res: data,))).then((value) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => StatementScreen(index: index,statementName: "Statement $index",res: data,isFromstatement: false,))).then((value) {
               if(value != null && value == true){
                 getData();
               }

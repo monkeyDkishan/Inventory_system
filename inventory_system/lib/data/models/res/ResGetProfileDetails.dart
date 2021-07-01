@@ -66,25 +66,25 @@ class ResGetProfileDetailsData {
 
 class ResGetProfileDetailsList {
   ResGetProfileDetailsList({
-    // this.partytypename,
+    this.partytypename,
     this.partyid,
     // this.partytypeid,
     this.partyname,
-    // this.street,
-    // this.city,
-    // this.zipcode,
+    this.street,
+    this.city,
+    this.zipcode,
     this.phone,
     // this.fax,
-    // this.email,
+    this.email,
     // this.remark,
     // this.flagdeleted,
     // this.endeffdt,
     // this.agentid,
-    // this.partynumber,
-    // this.gstno,
-    // this.stateid,
-    // this.duedays,
-    // this.statename,
+    this.partynumber,
+    this.gstno,
+    this.stateid,
+    this.duedays,
+    this.statename,
     this.tcsAmountPercentage,
     this.tcsLimit,
     this.tcsAmount,
@@ -94,48 +94,48 @@ class ResGetProfileDetailsList {
   int partyid;
   String partyname;
   // int partytypeid;
-  // String partytypename;
-  // String street;
-  // String city;
-  // int zipcode;
+  String partytypename;
+  String street;
+  String city;
+  int zipcode;
   String phone;
   // String fax;
-  // String email;
+  String email;
   // String remark;
   // bool flagdeleted;
   // DateTime endeffdt;
   // int agentid;
   // dynamic agentname;
-  // int partynumber;
-  // String gstno;
-  // int stateid;
-  // int duedays;
-  // String statename;
+  int partynumber;
+  String gstno;
+  int stateid;
+  int duedays;
+  String statename;
   double tcsAmountPercentage;
   double tcsLimit;
   double tcsAmount;
   bool isTcsApply;
 
   factory ResGetProfileDetailsList.fromJson(Map<String, dynamic> json) => ResGetProfileDetailsList(
-    // partytypename: json["partytypename"],
+    partytypename: json["partytypename"],
     partyid: json["partyid"],
     // partytypeid: json["partytypeid"],
     partyname: json["partyname"],
-    // street: json["street"],
-    // city: json["city"],
-    // zipcode: json["zipcode"],
+    street: json["street"],
+    city: json["city"],
+    zipcode: json["zipcode"],
     phone: json["phone"],
     // fax: json["fax"],
-    // email: json["email"],
+    email: json["email"],
     // remark: json["remark"],
     // flagdeleted: json["flagdeleted"],
     // endeffdt: DateTime.parse(json["endeffdt"]),
     // agentid: json["agentid"],
-    // partynumber: json["partynumber"],
-    // gstno: json["gstno"],
-    // stateid: json["stateid"],
-    // duedays: json["duedays"],
-    // statename: json["Statename"],
+    partynumber: json["partynumber"],
+    gstno: json["gstno"],
+    stateid: json["stateid"],
+    duedays: json["duedays"],
+    statename: json["Statename"],
     tcsAmountPercentage: json["TcsAmountPercentage"].toDouble(),
     tcsLimit: json["TcsLimit"],
     tcsAmount: json["TcsAmount"].toDouble(),
@@ -143,25 +143,25 @@ class ResGetProfileDetailsList {
   );
 
   Map<String, dynamic> toJson() => {
-    // "partytypename": partytypename,
+    "partytypename": partytypename,
     // "partyid": partyid,
     // "partytypeid": partytypeid,
     "partyname": partyname,
-    // "street": street,
-    // "city": city,
-    // "zipcode": zipcode,
+    "street": street,
+    "city": city,
+    "zipcode": zipcode,
     "phone": phone,
     // "fax": fax,
-    // "email": email,
+    "email": email,
     // "remark": remark,
     // "flagdeleted": flagdeleted,
     // "endeffdt": endeffdt.toIso8601String(),
     // "agentid": agentid,
-    // "partynumber": partynumber,
-    // "gstno": gstno,
-    // "stateid": stateid,
-    // "duedays": duedays,
-    // "Statename": statename,
+    "partynumber": partynumber,
+    "gstno": gstno,
+    "stateid": stateid,
+    "duedays": duedays,
+    "Statename": statename,
     "TcsAmountPercentage": tcsAmountPercentage,
     "TcsLimit": tcsLimit,
     "TcsAmount": tcsAmount,

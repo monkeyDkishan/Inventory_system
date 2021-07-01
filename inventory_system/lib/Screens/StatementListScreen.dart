@@ -123,7 +123,7 @@ class _StatementListScreenState extends State<StatementListScreen> {
                   ),
                 ),
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => StatementScreen(index: index,statementName: "Statement $index",res: data,))).then((value) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => StatementScreen(index: index,statementName: "Statement $index",res: data,isFromstatement: true,))).then((value) {
                     if(value != null && value == true){
                       getData();
                     }

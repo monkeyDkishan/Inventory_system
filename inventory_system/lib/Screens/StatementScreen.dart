@@ -13,10 +13,12 @@ import 'package:inventory_system/services/webService.dart';
 
 class StatementScreen extends StatefulWidget {
 
-  StatementScreen({this.statementName,this.index,this.res});
+  StatementScreen({this.statementName,this.index,this.res,this.isFromstatement});
 
   final String statementName;
   final int index;
+
+  final bool isFromstatement;
 
   final GetBillDetailsList res;
 
@@ -35,13 +37,13 @@ class _StatementScreenState extends State<StatementScreen> {
         title: Text('My Order'),
         actions: [
 
-          if(!widget.res.isamountpaid)
+          if(!widget.res.isamountpaid && !widget.isFromstatement)
             IconButton(onPressed: (){
               CustomPopup(context, title: 'Are you sure', message: 'You want to delete this order?', primaryBtnTxt: 'YES',primaryAction: (){
                 deleteOrder(widget.res.orderid ?? 0);
               },secondaryBtnTxt: 'NO');
             }, icon: Icon(Icons.delete)),
-          if(!widget.res.isamountpaid)
+          if(!widget.res.isamountpaid && !widget.isFromstatement)
             IconButton(onPressed: (){
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditOrderScreen(res: widget.res,),));
             }, icon: Icon(Icons.edit))
@@ -158,7 +160,7 @@ class _StatementScreenState extends State<StatementScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Total: ',style: TextStyle(color: Colors.white),),
-                    Text('Rs. ${data.totalpayable}',style: TextStyle(
+                    Text('Rs. ${data.totalpayable.toStringAsFixed(2)}',style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.white
@@ -166,7 +168,7 @@ class _StatementScreenState extends State<StatementScreen> {
                   ],
                 ),
 
-                if(!widget.res.isamountpaid && Platform.isAndroid)
+                if(!widget.res.isamountpaid && Platform.isAndroid && !widget.isFromstatement)
                   Container(
                     alignment: Alignment.centerRight,
                     height: 44,

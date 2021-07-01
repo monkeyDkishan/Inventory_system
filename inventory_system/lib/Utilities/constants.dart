@@ -1,7 +1,8 @@
 
-const String kBaseDomain = "1.22.229.42";
+const String kBaseDomain = "198.251.74.218";
 const String kBasePath = "skrestapi/v1/";
-const String kBaseUrl = "http://1.22.229.42/skrestapi/v1/";
+const String kBaseUrl = "http://198.251.74.218/skrestapi/v1/";
+// http://1.22.229.42/skrestapi/v1/
 const String kIsValidMobile = "isValidMobile";
 const String kIsValidOTP = "isValidOTP";
 const String kGetProfileDetails = "getProfileDetails";

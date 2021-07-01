@@ -145,10 +145,10 @@ Widget sideMenu(Future<void> _showMyDialog()) {
                       ),
                     ),
                     onTap: () {
-                      // Navigator.pop(context);
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(builder: (context) => ProfileScreen()));
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ProfileScreen()));
                     },
                   );
                 }

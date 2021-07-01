@@ -295,7 +295,7 @@ class _CartScreenState extends State<CartScreen> {
                                               getCart();
                                             });
                                           },
-                                          child: Text("REMOVE",style: TextStyle(color: Colors.red),)),
+                                          child: Icon(Icons.delete,color: Colors.redAccent,)),
                                       // if(false)
                                       Container(
                                         child: TextButton(
@@ -332,22 +332,7 @@ class _CartScreenState extends State<CartScreen> {
                                               fullscreenDialog: true,
                                             ));
                                           },
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 5),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                border: Border.all(
-                                                    color: ColorUtil
-                                                        .buttonColor)),
-                                            child: Text(
-                                              "EDIT",
-                                              style: TextStyle(
-                                                  color:
-                                                      ColorUtil.buttonColor),
-                                            ),
-                                          ),
+                                          child: Icon(Icons.edit,color: ColorUtil.primoryColor,),
                                         ),
                                       )
                                     ],
@@ -494,7 +479,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                     Container(
                       height: 50,
-                      color: Colors.black12,
+                      color: Colors.redAccent,
                       child: InkWell(
                         onTap: (){
                           CustomPopup(context,
