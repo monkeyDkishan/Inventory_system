@@ -191,16 +191,30 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
                                           units = [];
 
-                                          res.unitmaster.forEach((element) {
+                                          int selIndex = 0;
+
+                                          res.unitmaster.asMap().forEach((index,element) {
+
+                                            if(element.unitmasterid == res.standeruom){
+                                              selIndex = index;
+                                            }
 
                                             units.add(UnitItem(unitId: element.unitmasterid ?? 0,unitPrice: element.unitPrize,unitName: element.unitname ?? ""));
 
                                           });
 
+                                          UnitItem selectedUnit = units.where((element) {
+                                            return res.standeruom == element.unitId;
+                                          }).last;
+
+                                          print('Selected unit is ${selectedUnit.unitId}');
+
                                           Navigator.push(context, new MaterialPageRoute(
                                             builder: (BuildContext context) => FullScreenDialog(
+                                              dropdownValue: selectedUnit,
                                               productID: res.productid,
-                                              index: res.selectedUnitIndex ?? 0,units: units,
+                                              index: selIndex,
+                                              units: units,
                                               completion: (unit, quantity, notes,index) async {
 
                                                 final cartItem = await CartService.getCarts();

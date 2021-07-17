@@ -76,13 +76,26 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
 
     List<UnitItem> units = [];
 
-    widget.itemDetail.unitmaster.forEach((element) {
+    int selIndex = 0;
+
+    widget.itemDetail.unitmaster.asMap().forEach((index,element) {
+
+      if(element.unitmasterid == widget.itemDetail.standeruom){
+        selIndex = index;
+      }
 
       units.add(UnitItem(unitId: element.unitmasterid ?? 0,unitPrice: element.unitPrize,unitName: element.unitname ?? ""));
 
     });
 
+    UnitItem selectedUnit = units.where((element) {
+      return widget.itemDetail.standeruom == element.unitId;
+    }).last;
+
+
     _myDialog = new FullScreenDialog(
+      dropdownValue: selectedUnit,
+      index: selIndex,
       productID: widget.itemDetail.productid ?? 0,
       units: units,
       completion: (unit, quantity, notes, index) async {

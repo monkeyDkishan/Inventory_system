@@ -27,10 +27,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'icon':'https://play-lh.googleusercontent.com/k7yz57K2OxhNrPNKF2U18Zcv9rodOu7CfWh47U15FFUN8-_B0hQfXsM-BaLG0gOtvw=s360'
     },
     {
-      'app_name':'phonePay',
+      'app_name':'PhonePay',
       'package_name':'com.phonepe.app',
       'icon':'https://play-lh.googleusercontent.com/6iyA2zVz5PyyMjK5SIxdUhrb7oh9cYVXJ93q6DZkmx07Er1o90PXYeo6mzL4VC2Gj9s=s360'
     },
+    {
+      'app_name':'google Pay',
+      'package_name':'com.google.android.apps.walletnfcrel',
+      'icon':'https://play-lh.googleusercontent.com/HNlca01K9XLSJ8EYzY655EOsV8Nw90vFwmhjQzpLbLacQIRP2kDHfcugxL0a3H58BAX0=s360'
+    }
   ];
 
   Future<void> getApps() async {

@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  int totalOutStandings;
+  double totalOutStandings;
 
   getInitialData(){
     UserModel.getProfileDetails(completion: (res) async {
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if(res.state == Status.COMPLETED){
         setState(() {
-          totalOutStandings = res.data.totalOutStanding ?? 0;
+          totalOutStandings = res.data.data.totalOutStanding ?? 0.0;
         });
       }
     });
