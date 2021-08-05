@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_system/Screens/CategoryScreen.dart';
 import 'package:inventory_system/Screens/InvoiceListScreen.dart';
+import 'package:inventory_system/Screens/ItemDetailScreen.dart';
 import 'package:inventory_system/Screens/LoginScreen.dart';
 import 'package:inventory_system/Screens/OrderListScreen.dart';
 import 'package:inventory_system/Screens/SideMenuDrawer.dart';
@@ -236,10 +237,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: TextField(
                     textInputAction: TextInputAction.search,
-                    onSubmitted: (text){
+                    onSubmitted: (text) async {
+
+                      await CategoryModel.getItemID(completion: (res){
+
+                        if(res.state == Status.COMPLETED){
+
+                          try{
+                            var data = res.data.data;
+
+                            var first = data.list.first;
+
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) => ItemDetailScreen(index: 0,itemDetail: res,))).then((value) {
+                            //   print('cool');
+                            //   updateCount();
+                            // });
+
+                          }catch(e){
+
+                          }
+                        }
+
+                      },text: text);
+
+
 
                     },
-                    onChanged: (text){
+                    onChanged: (text) {
+
+                      return;
+
                       print(text);
 
                       var cool = resList.where((element) => element.name.toLowerCase().contains(text.toLowerCase())).toList();

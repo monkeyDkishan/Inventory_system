@@ -7,6 +7,7 @@ const String kIsValidMobile = "isValidMobile";
 const String kIsValidOTP = "isValidOTP";
 const String kGetProfileDetails = "getProfileDetails";
 const String kGetCategoryList = "getCategoryList";
+const String kGetItemID = "GetItemID";
 const String kGetSubCategoryList = "getSubCategoryList";
 const String kGetItemList = "getItemList";
 const String kGetPrivacyPolicy = "getPrivacyPolicy";

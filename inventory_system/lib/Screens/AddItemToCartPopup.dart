@@ -80,20 +80,21 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                     iconSize: 24,
                     elevation: 16,
                     underline: Container(),
-                    onChanged: (UnitItem newValue) {
-                      setState(() {
-                        dropdownValue = newValue;
 
-                        widget.units.asMap().forEach((index, value) {
-
-                          if(value.unitId == newValue.unitId){
-                            widget.index = index;
-                          }
-
-                        });
-
-                      });
-                    },
+                    // onChanged: (UnitItem newValue) {
+                    //   setState(() {
+                    //     dropdownValue = newValue;
+                    //
+                    //     widget.units.asMap().forEach((index, value) {
+                    //
+                    //       if(value.unitId == newValue.unitId){
+                    //         widget.index = index;
+                    //       }
+                    //
+                    //     });
+                    //
+                    //   });
+                    // },
                     items: widget.units.map<DropdownMenuItem<UnitItem>>((UnitItem value) {
                       return DropdownMenuItem<UnitItem>(
                         value: value,

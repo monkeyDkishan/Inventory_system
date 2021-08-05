@@ -212,6 +212,7 @@ class Cart {
     this.quantity,
     this.note,
     this.unitmaster,
+    this.Weight,
     this.selectedIndex
   });
 
@@ -227,6 +228,7 @@ class Cart {
   int quantity;
   String note;
   int selectedIndex;
+  double Weight;
   List<Unitmaster> unitmaster;
 
   factory Cart.fromJson(Map<String, dynamic> json) => Cart(
@@ -243,7 +245,7 @@ class Cart {
     note: json["note"],
     unitmaster: List<Unitmaster>.from(json["unitmaster"].map((x) => Unitmaster.fromJson(x))),
     selectedIndex: json["selectedIndex"],
-
+      Weight: json["Weight"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -260,6 +262,7 @@ class Cart {
     "note": note,
     "unitmaster": List<dynamic>.from(unitmaster.map((x) => x.toJson())),
     "selectedIndex": selectedIndex,
+    "Weight":Weight
   };
 }
 

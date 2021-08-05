@@ -221,7 +221,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
                                                 if(cartItem == null){
 
-                                                  final cartItem = Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes,unitmaster: res.unitmaster,selectedIndex: index);
+                                                  final cartItem = Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes,unitmaster: res.unitmaster,selectedIndex: index,Weight: res.Weight);
 
                                                   CartService.addItemObj(cartItem);
 
@@ -234,7 +234,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                                   print('exist: $exist');
 
                                                   if(!exist){
-                                                    final cartItem = Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes,unitmaster: res.unitmaster);
+                                                    final cartItem = Cart(productid: res.productid,categoryid: res.categoryid,subcategoryid: res.subcategoryid,productName: res.productName,description: res.description,imageUrl: res.imageList.first.imageUrl.toString(),unitName: unit.unitName,unitPrice: unit.unitPrice,unitId: unit.unitId,quantity: quantity,note: notes,unitmaster: res.unitmaster,Weight: res.Weight);
 
                                                     CartService.addItemObj(cartItem);
                                                     CustomPopup(context, title: 'Cart', message: 'Item added in cart', primaryBtnTxt: 'OK');

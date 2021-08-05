@@ -35,6 +35,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'app_name':'google Pay',
       'package_name':'com.google.android.apps.walletnfcrel',
       'icon':'https://play-lh.googleusercontent.com/HNlca01K9XLSJ8EYzY655EOsV8Nw90vFwmhjQzpLbLacQIRP2kDHfcugxL0a3H58BAX0=s360'
+    },
+    {
+      'app_name':'BHIM',
+      'package_name':'in.org.npci.upiapp',
+      'icon':'https://play-lh.googleusercontent.com/B5cNBA15IxjCT-8UTXEWgiPcGkJ1C07iHKwm2Hbs8xR3PnJvZ0swTag3abdC_Fj5OfnP=s360'
+    },
+    {
+      'app_name':'IMPS',
+      'package_name':'com.transfer.cashout',
+      'icon':'https://play-lh.googleusercontent.com/m9pxW1vTk5kz1JXE8OLODmDOtQ9EshehvbT5nuCm11q8bWfNoq-_CYczPG-aaGFvIcs=s360'
     }
   ];
 

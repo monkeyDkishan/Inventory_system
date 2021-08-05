@@ -1,5 +1,6 @@
 import 'package:inventory_system/data/models/res/BaseRes.dart';
 import 'package:inventory_system/data/models/res/ResGetCategoryList.dart';
+import 'package:inventory_system/data/models/res/ResGetItemID.dart';
 import 'package:inventory_system/data/models/res/ResGetItemList.dart';
 import 'package:inventory_system/data/models/res/ResGetProfileDetails.dart';
 import 'package:inventory_system/data/models/res/ResGetSubCategoryList.dart';
@@ -18,6 +19,38 @@ class CategoryModel {
   static var subCategoriesRes = ApiResponse<ResGetSubCategory>();
 
   static var itemRes = ApiResponse<ResGetItem>();
+
+  static var searchedRes = ApiResponse<ResGetItemId>();
+
+  static Future getItemID({String text,Function(ApiResponse<ResGetItemId>) completion}) async {
+
+    try {
+
+      searchedRes.state = Status.LOADING;
+
+      ResGetItemId res = await _userRepo.getItemId(text: text);
+
+      if (res.status == 0) {
+
+        throw res.message;
+      }
+      else if(res.status == 2){
+
+        throw res.message;
+      }
+
+      searchedRes.data = res;
+      searchedRes.state = Status.COMPLETED;
+      completion(searchedRes);
+
+    }catch (e){
+      print(e);
+      searchedRes.msg = e.toString();
+      searchedRes.state = Status.ERROR;
+      completion(searchedRes);
+    }
+
+  }
 
   static Future getCategoryList({Function(ApiResponse<ResGetCategory>,bool) completion}) async {
 

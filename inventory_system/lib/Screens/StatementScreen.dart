@@ -208,6 +208,7 @@ class _StatementScreenState extends State<StatementScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text('cool'),
                         Text('${data.productname}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,

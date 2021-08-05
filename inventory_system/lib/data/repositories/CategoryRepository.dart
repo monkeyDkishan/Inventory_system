@@ -1,5 +1,6 @@
 import 'package:inventory_system/Utilities/constants.dart';
 import 'package:inventory_system/data/models/res/ResGetCategoryList.dart';
+import 'package:inventory_system/data/models/res/ResGetItemID.dart';
 import 'package:inventory_system/data/models/res/ResGetItemList.dart';
 import 'package:inventory_system/data/models/res/ResGetSubCategoryList.dart';
 import 'package:inventory_system/services/webService.dart';
@@ -7,6 +8,19 @@ import 'package:inventory_system/services/webService.dart';
 class CategoryRepository{
 
   WebService _webService = WebService();
+
+  Future<ResGetItemId> getItemId({String text}) async{
+    var res = await _webService.getApiWithQuery(kGetItemID, {
+      'ItemCode': text,
+      'Page': '1'
+    });
+
+    try{
+      return ResGetItemId.fromJson(res);
+    }catch(e){
+      throw "Decoding Error";
+    }
+  }
 
   Future<ResGetCategory> getCategoryListApi() async{
     var res = await _webService.getApi(kGetCategoryList);

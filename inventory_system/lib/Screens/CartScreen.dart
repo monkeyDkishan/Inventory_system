@@ -39,6 +39,8 @@ class _CartScreenState extends State<CartScreen> {
 
   bool isLoading = false;
 
+  double weightTotal = 0.0;
+
   List<ResGetDeliveryTypeListElement> deliveryTypes;
 
   @override
@@ -55,7 +57,9 @@ class _CartScreenState extends State<CartScreen> {
 
     res.cart.forEach((e) {
       priceTotal += ((e.quantity ?? 0.0) * (e.unitPrice ?? 0.0));
+
     });
+
 
     print(priceTotal);
     setState(() {
@@ -84,6 +88,20 @@ class _CartScreenState extends State<CartScreen> {
       }
     }
     finalTotal = subTotal.toDouble() + deliveryCharge.toDouble() + tcsCharge.toDouble();
+
+
+    double weightPrice = 0.0;
+
+    var res = await CartService.getCarts();
+    if(dropdownValue.deliveryid == 2671){
+      res.cart.forEach((e) {
+        weightPrice += ((e.Weight * e.quantity) / 1000) *  dropdownValue.price;
+      });
+    }
+    this.weightTotal = weightPrice;
+
+    this.subTotal += weightTotal;
+
   }
 
   getDeliveryType() async {
@@ -380,7 +398,8 @@ class _CartScreenState extends State<CartScreen> {
                           iconSize: 24,
                           elevation: 16,
                           underline: Container(),
-                          onChanged: (ResGetDeliveryTypeListElement newValue) {
+                          onChanged: (ResGetDeliveryTypeListElement newValue) async {
+
                             setState((){
                               dropdownValue = newValue;
                               deliveryCharge = dropdownValue.price ?? 0.0;
