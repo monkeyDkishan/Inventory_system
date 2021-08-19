@@ -454,6 +454,8 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
                 ),
                 Text('Note: ${reqData.note}'),
                 Text('Category: ${resData.categoryName}'),
+                Text('Unit: ${resData.unitmaster.where((element) => element.unitmasterid == resData.unitid).first.unitname ?? ''}'),
+                Text('Qty: ${resData.noofunit}'),
                 SizedBox(height: 10),
                 Align(
                     alignment: Alignment.centerRight,

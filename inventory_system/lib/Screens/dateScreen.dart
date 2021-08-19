@@ -15,6 +15,7 @@ class _DateScreenState extends State<DateScreen> {
   DateTime endDate = DateTime.now();
 
   Future<void> _selectStartDate(BuildContext context) async {
+    print('cool');
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: startDate,

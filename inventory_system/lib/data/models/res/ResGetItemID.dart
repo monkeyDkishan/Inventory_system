@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:inventory_system/data/models/res/ResGetItemList.dart';
+
 ResGetItemId resGetItemIdFromJson(String str) => ResGetItemId.fromJson(json.decode(str));
 
 String resGetItemIdToJson(ResGetItemId data) => json.encode(data.toJson());
@@ -43,13 +45,13 @@ class Data {
   int totalRecords;
   int pageSize;
   int currentPage;
-  List<ListElement> list;
+  List<ResGetItemList> list;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     totalRecords: json["TotalRecords"],
     pageSize: json["PageSize"],
     currentPage: json["CurrentPage"],
-    list: List<ListElement>.from(json["list"].map((x) => ListElement.fromJson(x))),
+    list: List<ResGetItemList>.from(json["list"].map((x) => ResGetItemList.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {

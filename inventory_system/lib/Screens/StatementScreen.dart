@@ -208,7 +208,6 @@ class _StatementScreenState extends State<StatementScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('cool'),
                         Text('${data.productname}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -217,6 +216,9 @@ class _StatementScreenState extends State<StatementScreen> {
                         ),
                         Text('Note: ${data.note}'),
                         Text('Category: ${data.categoryName}'),
+                        Text('Unit: ${data.unitmaster.where((element) => element.unitmasterid == data.unitid).first.unitname ?? ''}'),
+                        Text('Qty: ${data.noofunit}'),
+
                         SizedBox(height: 10),
                         Align(
                           alignment: Alignment.centerRight,

@@ -248,13 +248,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             var first = data.list.first;
 
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => ItemDetailScreen(index: 0,itemDetail: res,))).then((value) {
-                            //   print('cool');
-                            //   updateCount();
-                            // });
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ItemDetailScreen(index: 0,itemDetail: first,))).then((value) {
+                              print('cool');
+                              updateCount();
+                            });
 
                           }catch(e){
-
+                            print(e);
                           }
                         }
 
