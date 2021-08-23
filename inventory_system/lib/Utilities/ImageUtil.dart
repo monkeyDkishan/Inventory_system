@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 
 class ImageUtil{
-  static Image app_logo = Image.asset("Assets/Images/SKIcon.png");
+  static Image app_logo = Image.asset("Assets/Images/Sk.png");
 
   static fadeInImage(String url, String assets){
 

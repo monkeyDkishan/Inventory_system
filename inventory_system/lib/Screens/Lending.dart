@@ -34,7 +34,7 @@ class _LendingScreenState extends State<LendingScreen> {
   Widget build(BuildContext context) {
 
     if(isUserLogin == null){
-      return Container(color: Colors.black);
+      return Container(color: Colors.white);
     }else{
       if(isUserLogin){
         return MessageHandler(child: HomeScreen(),); //HomeScreen();

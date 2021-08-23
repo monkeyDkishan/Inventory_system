@@ -103,7 +103,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         showSemanticsDebugger: false,
         debugShowMaterialGrid: false,
-        title: 'Flutter Demo',
+        title: 'SK Decor',
         supportedLocales: [
           Locale('en','US'),
         ],

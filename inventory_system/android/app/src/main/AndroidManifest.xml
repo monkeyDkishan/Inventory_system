@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="inventory_system"
+        android:label="SK Decor"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity

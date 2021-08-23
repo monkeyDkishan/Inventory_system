@@ -112,7 +112,7 @@ class _LoginOTPScreenState extends State<LoginOTPScreen> {
                     children: [
                       middleSizedBoxes(30),
                       Container(
-                        height: mediaQuerySize.height / 3.5,
+                        height: mediaQuerySize.height / 5,
                         child: ImageUtil.app_logo,
                       ),
                       middleSizedBoxes(30),

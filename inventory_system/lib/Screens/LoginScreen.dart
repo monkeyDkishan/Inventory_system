@@ -62,14 +62,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     Column(
                       children: [
-                        SizedBox(height: 30),
+                        SizedBox(height: 20),
                         Center(child: Text(translate("welcome_to_app_LOGIN_SCREEN"),style: TextStyle(
                             fontFamily: FontUtil.regular_fonts,
                             fontSize: 30
                         ),)),
-                        SizedBox(height: 40),
-                        Container(child: ImageUtil.app_logo),
-                        SizedBox(height: 40),
+                        SizedBox(height: 20),
+                        Container(
+                          height:100,
+                            child: ImageUtil.app_logo),
+                        SizedBox(height: 20),
                         Center(child: Text(translate("enter_mobile_number_LOGIN_SCREEN"),style: TextStyle(
                           fontFamily: FontUtil.regular_fonts,
                           fontSize: 20,
