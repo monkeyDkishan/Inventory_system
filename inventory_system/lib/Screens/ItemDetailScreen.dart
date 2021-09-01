@@ -44,7 +44,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: Container(
-              child: ImageUtil.fadeInImage(kImgUrl + (res[index].imageUrl ?? ""), 'Assets/Images/placeholder.png'),
+              child: ImageUtil.fadeInImage(kImgUrl + ('${res[index].imageUrl ?? ""}'), 'Assets/Images/placeholder.png'),
             ),
           ),
         );

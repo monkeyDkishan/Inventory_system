@@ -329,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Container(
                                   width: double.infinity,
                                   color: Colors.white,
-                                  child: ImageUtil.fadeInImage( kImgUrl + data.imageUrl ?? "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png", 'Assets/Images/placeholder.png'),
+                                  child: data.imageUrl == null ? Image.asset('Assets/Images/placeholder.png',fit: BoxFit.cover,) : ImageUtil.fadeInImage( kImgUrl + data.imageUrl ?? "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png", 'Assets/Images/placeholder.png'),
                                 ),
                               ),
                               Expanded(

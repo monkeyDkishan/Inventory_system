@@ -153,7 +153,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                 aspectRatio: 1,
                                 child: Container(
                                   color: Colors.black.withOpacity(0.1),
-                                  child: ImageUtil.fadeInImage( (kImgUrl + res.imageList.first.imageUrl.toString()) ?? 'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png', 'Assets/Images/placeholder.png'),
+                                  child: ImageUtil.fadeInImage( (kImgUrl + '${res.imageList.first.imageUrl.toString()}') ?? 'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png', 'Assets/Images/placeholder.png'),
                                 )
                               ),
                             ),

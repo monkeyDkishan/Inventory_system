@@ -132,7 +132,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   aspectRatio: 1,
                   child: Container(
                     color: Colors.white,
-                    child: ImageUtil.fadeInImage( kImgUrl + res.imageUrl ?? "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png", 'Assets/Images/placeholder.png'),
+                    child: res.imageUrl == null ? Image.asset('Assets/Images/placeholder.png',fit: BoxFit.cover,) : ImageUtil.fadeInImage( kImgUrl + res.imageUrl ?? "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png", 'Assets/Images/placeholder.png'),
                   ),
                 ),
               ),

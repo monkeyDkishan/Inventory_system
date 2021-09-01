@@ -212,6 +212,10 @@ class _CartScreenState extends State<CartScreen> {
       return LoadingSmall(color: ColorUtil.primoryColor,);
     }
 
+    if (deliveryTypes == null){
+      return NoDataFoundContainer();
+    }
+
     if(cart == null || cart.cart.length <= 0){
       return NoDataFoundContainer();
     }
@@ -249,7 +253,7 @@ class _CartScreenState extends State<CartScreen> {
                                 child: Container(
                                   child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
-                                    child: ImageUtil.fadeInImage(kImgUrl + (res.imageUrl.toString() ?? ""), 'Assets/Images/placeholder.png'),
+                                    child: ImageUtil.fadeInImage(kImgUrl + '${(res.imageUrl.toString() ?? "")}', 'Assets/Images/placeholder.png'),
                                   ),
                                   decoration: BoxDecoration(
                                       borderRadius:
@@ -457,7 +461,7 @@ class _CartScreenState extends State<CartScreen> {
                           SizedBox(width: 5),
                           Expanded(
                             child: Text(
-                              '${(dropdownValue.price ?? 0.0).toStringAsFixed(2)}',
+                              '${(dropdownValue.price ?? 0.0).toStringAsFixed(2) ?? ''}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end,

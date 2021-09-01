@@ -95,7 +95,7 @@ class ResGetCategoryList {
   int categorylevel;
   int sortorder;
   int productid;
-  dynamic imageUrl;
+  String imageUrl;
   String categoryName;
   String subCategoryName;
 

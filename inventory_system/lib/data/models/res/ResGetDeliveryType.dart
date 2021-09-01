@@ -12,7 +12,7 @@ class ResGetDeliveryType {
 
   factory ResGetDeliveryType.fromJson(Map<String, dynamic> json) {
 
-    if(json["data"] == null){
+    if(json["data"] == null || json["Status"] != 1){
       return ResGetDeliveryType(
         status: json["Status"],
         message: json["Message"],
