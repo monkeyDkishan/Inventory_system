@@ -1,10 +1,9 @@
 
-// const String kBaseDomain = "198.251.74.218";
-// const String kBasePath = "skrestapi/v1/";
-// const String kBaseUrl = "http://198.251.74.218/skrestapi/v1/";
-const String kBaseDomain = "103.36.80.112";
-const String kBasePath = "santkrupa/v1/";
-const String kBaseUrl = "http://$kBaseDomain/$kBasePath";
+// const String kBaseDomain = "198.251.74.218";//Demo
+// const String kBasePath = "skrestapi/v1/";//Demo
+const String kBaseDomain = "103.36.80.112";//Live
+const String kBasePath = "santkrupa/v1/";//Live
+const String kBaseUrl = "http://$kBaseDomain/$kBasePath";//http://198.251.74.218/skrestapi/v1/GetDeliveryType
 // http://1.22.229.42/skrestapi/v1/
 const String kIsValidMobile = "isValidMobile";
 const String kIsValidOTP = "isValidOTP";

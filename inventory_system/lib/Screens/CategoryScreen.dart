@@ -119,7 +119,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
                 print(res.subcategoryid);
 
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SubCategoryScreen(subCategoryName: res.subCategoryName,productId: res.productid,subCategoryId: res.subcategoryid ?? 0,categoryId: res.categoryid,))).then((value) {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SubCategoryScreen(subCategoryName: res.subCategoryName,productId: null,subCategoryId: res.subcategoryid ?? 0,categoryId: res.categoryid,))).then((value) {
                   updateCount();
                 });
               },

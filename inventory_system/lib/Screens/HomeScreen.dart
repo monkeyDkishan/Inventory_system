@@ -5,6 +5,7 @@ import 'package:inventory_system/Screens/InvoiceListScreen.dart';
 import 'package:inventory_system/Screens/ItemDetailScreen.dart';
 import 'package:inventory_system/Screens/LoginScreen.dart';
 import 'package:inventory_system/Screens/OrderListScreen.dart';
+import 'package:inventory_system/Screens/SearchItemScreen.dart';
 import 'package:inventory_system/Screens/SideMenuDrawer.dart';
 import 'package:inventory_system/Screens/SubCategoryScreen.dart';
 import 'package:inventory_system/Utilities/ColorUtil.dart';
@@ -235,53 +236,62 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    textInputAction: TextInputAction.search,
-                    onSubmitted: (text) async {
-
-                      await CategoryModel.getItemID(completion: (res){
-
-                        if(res.state == Status.COMPLETED){
-
-                          try{
-                            var data = res.data.data;
-
-                            var first = data.list.first;
-
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ItemDetailScreen(index: 0,itemDetail: first,))).then((value) {
-                              print('cool');
-                              updateCount();
-                            });
-
-                          }catch(e){
-                            print(e);
-                          }
-                        }
-
-                      },text: text);
-
-
-
-                    },
-                    onChanged: (text) {
-
-                      return;
-
-                      print(text);
-
-                      var cool = resList.where((element) => element.name.toLowerCase().contains(text.toLowerCase())).toList();
-
-                      setState(() {
-                        searchedList = cool;
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchItemsScreen(),fullscreenDialog: true)).then((value) {
+                        updateCount();
                       });
                     },
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      hintText: 'Search',
+                    child: TextField(
+                      textInputAction: TextInputAction.search,
+
+                      enabled: false,
+                      onSubmitted: (text) async {
+                        return;
+                        // await CategoryModel.getItemID(completion: (res){
+                        //
+                        //   if(res.state == Status.COMPLETED){
+                        //
+                        //     try{
+                        //       var data = res.data.data;
+                        //
+                        //       var first = data.list.first;
+                        //
+                        //       Navigator.push(context, MaterialPageRoute(builder: (context) => ItemDetailScreen(index: 0,itemDetail: first,))).then((value) {
+                        //         print('cool');
+                        //         updateCount();
+                        //       });
+                        //
+                        //     }catch(e){
+                        //       print(e);
+                        //     }
+                        //   }
+                        //
+                        // },text: text);
+
+
+
+                      },
+                      onChanged: (text) {
+
+                        return;
+
+                        print(text);
+
+                        var cool = resList.where((element) => element.name.toLowerCase().contains(text.toLowerCase())).toList();
+
+                        setState(() {
+                          searchedList = cool;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        hintText: 'Search',
+                      ),
                     ),
                   ),
                 ),

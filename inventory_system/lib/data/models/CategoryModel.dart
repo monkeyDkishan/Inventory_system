@@ -22,29 +22,29 @@ class CategoryModel {
 
   static var searchedRes = ApiResponse<ResGetItemId>();
 
-  static Future getItemID({String text,Function(ApiResponse<ResGetItemId>) completion}) async {
+  static Future getItemID({int page,String text,Function(ApiResponse<ResGetItemId>) completion}) async {
 
     try {
 
       searchedRes.state = Status.LOADING;
 
-      ResGetItemId res = await _userRepo.getItemId(text: text);
+      ResGetItemId res = await _userRepo.getItemId(text: text,page: page);
 
-      if (res.status == 0) {
-
-        throw res.message;
-      }
-      else if(res.status == 2){
-
-        throw res.message;
-      }
+      // if (res.status == 0) {
+      //
+      //   throw res.message;
+      // }
+      // else if(res.status == 2){
+      //
+      //   throw res.message;
+      // }
 
       searchedRes.data = res;
       searchedRes.state = Status.COMPLETED;
       completion(searchedRes);
 
     }catch (e){
-      print(e);
+      print("error $e");
       searchedRes.msg = e.toString();
       searchedRes.state = Status.ERROR;
       completion(searchedRes);

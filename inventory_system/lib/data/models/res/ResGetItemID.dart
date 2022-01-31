@@ -1,14 +1,3 @@
-// To parse this JSON data, do
-//
-//     final resGetItemId = resGetItemIdFromJson(jsonString);
-
-import 'dart:convert';
-
-import 'package:inventory_system/data/models/res/ResGetItemList.dart';
-
-ResGetItemId resGetItemIdFromJson(String str) => ResGetItemId.fromJson(json.decode(str));
-
-String resGetItemIdToJson(ResGetItemId data) => json.encode(data.toJson());
 
 class ResGetItemId {
   ResGetItemId({
@@ -21,11 +10,22 @@ class ResGetItemId {
   String message;
   Data data;
 
-  factory ResGetItemId.fromJson(Map<String, dynamic> json) => ResGetItemId(
-    status: json["Status"],
-    message: json["Message"],
-    data: Data.fromJson(json["data"]),
-  );
+  factory ResGetItemId.fromJson(Map<String, dynamic> json) {
+
+    if(json["Status"] != 1){
+      return ResGetItemId(
+        status: json["Status"],
+        message: json["Message"],
+      );
+    }
+
+    return ResGetItemId(
+      status: json["Status"],
+      message: json["Message"],
+      data: Data.fromJson(json["data"]),
+    );
+
+  }
 
   Map<String, dynamic> toJson() => {
     "Status": status,
@@ -45,13 +45,13 @@ class Data {
   int totalRecords;
   int pageSize;
   int currentPage;
-  List<ResGetItemList> list;
+  List<ListElement> list;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     totalRecords: json["TotalRecords"],
     pageSize: json["PageSize"],
     currentPage: json["CurrentPage"],
-    list: List<ResGetItemList>.from(json["list"].map((x) => ResGetItemList.fromJson(x))),
+    list: List<ListElement>.from(json["list"].map((x) => ListElement.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -65,15 +65,19 @@ class Data {
 class ListElement {
   ListElement({
     this.itemId,
+    this.code,
   });
 
   int itemId;
+  String code;
 
   factory ListElement.fromJson(Map<String, dynamic> json) => ListElement(
     itemId: json["ItemID"],
+    code: json["Code"],
   );
 
   Map<String, dynamic> toJson() => {
     "ItemID": itemId,
+    "Code": code,
   };
 }

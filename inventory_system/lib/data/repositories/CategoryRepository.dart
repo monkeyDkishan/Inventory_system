@@ -9,10 +9,10 @@ class CategoryRepository{
 
   WebService _webService = WebService();
 
-  Future<ResGetItemId> getItemId({String text}) async{
+  Future<ResGetItemId> getItemId({String text,int page}) async{
     var res = await _webService.getApiWithQuery(kGetItemID, {
       'ItemCode': text,
-      'Page': '1'
+      'Page': '${page ?? 1}'
     });
 
     try{
@@ -45,17 +45,32 @@ class CategoryRepository{
   }
 
   Future<ResGetItem> getItemList(int categoryId,int subCategoryId,int productId) async{
-    var res = await _webService.getApiWithQuery(kGetItemList, {
-      "CategoryID" : categoryId.toString(),
-      "SubCategoryID" : subCategoryId.toString(),
-      // "ProductID" : productId.toString(),
-    });
 
-    try{
-      return ResGetItem.fromJson(res);
-    }catch(e){
-      throw "Decoding Error";
+    if(productId != null){
+      var res = await _webService.getApiWithQuery(kGetItemList, {
+        "ProductID" : productId.toString(),
+      });
+
+      try{
+        return ResGetItem.fromJson(res);
+      }catch(e){
+        throw "Decoding Error";
+      }
+    }else{
+      var res = await _webService.getApiWithQuery(kGetItemList, {
+        "CategoryID" : categoryId.toString(),
+        "SubCategoryID" : subCategoryId.toString(),
+        // "ProductID" : productId.toString(),
+      });
+
+      try{
+        return ResGetItem.fromJson(res);
+      }catch(e){
+        throw "Decoding Error";
+      }
     }
+
+
   }
 
 }
