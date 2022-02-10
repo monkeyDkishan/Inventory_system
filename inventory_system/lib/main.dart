@@ -48,50 +48,54 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
 
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  runApp(MyApp());
 
-  // Set the background messaging handler early on, as a named top-level function
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+  //
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  //
+  // // Set the background messaging handler early on, as a named top-level function
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  //
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
+  //
+  // await flutterLocalNotificationsPlugin
+  //     .resolvePlatformSpecificImplementation<
+  //     AndroidFlutterLocalNotificationsPlugin>()
+  //     ?.createNotificationChannel(channel);
+  //
+  // await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+  //   alert: true,
+  //   badge: true,
+  //   sound: true,
+  // );
+  //
+  // NotificationSettings settings = await messaging.requestPermission(
+  //   alert: true,
+  //   announcement: false,
+  //   badge: true,
+  //   carPlay: false,
+  //   criticalAlert: false,
+  //   provisional: false,
+  //   sound: true,
+  // );
+  //
+  // FirebaseConfig.FCMToken = await messaging.getToken(
+  //   vapidKey: "BC915JYdQGndGWwyZT0_1Lhl8omA9Zz3dr650NPfQ5mK0h4y9VV9mvgaYyAX9nLVt_05YjzxcpsDilZj2QJktFw",
+  // );
+  //
+  // // FirebaseConfig.FCMToken = "cool";
+  //
+  // print("FCM Token is: " + FirebaseConfig.FCMToken);
+  //
+  // print('User granted permission: ${settings.authorizationStatus}');
 
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-
-  NotificationSettings settings = await messaging.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
-
-  FirebaseConfig.FCMToken = await messaging.getToken(
-    vapidKey: "BC915JYdQGndGWwyZT0_1Lhl8omA9Zz3dr650NPfQ5mK0h4y9VV9mvgaYyAX9nLVt_05YjzxcpsDilZj2QJktFw",
-  );
-
-  // FirebaseConfig.FCMToken = "cool";
-
-  print("FCM Token is: " + FirebaseConfig.FCMToken);
-
-  print('User granted permission: ${settings.authorizationStatus}');
-
-  runZonedGuarded(() {
-    runApp(MyApp());
-  }, FirebaseCrashlytics.instance.recordError);
+  // runZonedGuarded(() {
+  //   runApp(MyApp());
+  // }, FirebaseCrashlytics.instance.recordError);
 }
 
 class MyApp extends StatelessWidget {
